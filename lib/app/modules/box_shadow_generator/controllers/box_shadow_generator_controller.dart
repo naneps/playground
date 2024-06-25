@@ -19,6 +19,7 @@ class BoxShadowGeneratorController extends GetxController
   void generateCode() {
     final StringBuffer buffer = StringBuffer();
 
+    buffer.writeln('```dart');
     buffer.writeln('Container(');
     buffer.writeln('  width: 200,');
     buffer.writeln('  height: 200,');
@@ -33,13 +34,14 @@ class BoxShadowGeneratorController extends GetxController
       buffer.writeln('        spreadRadius: ${shadow.spreadRadius},');
       buffer.writeln(
           '        offset: Offset(${shadow.offset.dx}, ${shadow.offset.dy}),');
-      buffer.writeln('        blurStyle: BlurStyle.${shadow.blurStyle},');
+      buffer.writeln('        blurStyle: ${shadow.blurStyle},');
       buffer.writeln('      ),');
     }
 
     buffer.writeln('    ],');
     buffer.writeln('  ),');
     buffer.writeln(');');
+    buffer.writeln('```');
 
     code.value = buffer.toString();
   }
@@ -54,6 +56,7 @@ class BoxShadowGeneratorController extends GetxController
         blurStyle: BlurStyle.normal,
       ),
     );
+    generateCode();
   }
 
   void onBlurRadiusChanged(double value) {
@@ -88,6 +91,7 @@ class BoxShadowGeneratorController extends GetxController
     );
     ever(boxShadows, (_) {
       updateTabController();
+      generateCode();
     });
   }
 

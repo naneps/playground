@@ -38,15 +38,7 @@ class PreviewShadowView extends GetView<BoxShadowGeneratorController> {
               ),
             ),
             const SizedBox(height: 20),
-            ExpansionTile(
-              onExpansionChanged: (value) {
-                if (value) {
-                  controller.generateCode();
-                }
-              },
-              title: const Text('Code'),
-              children: [CodePreview(code: controller.code.value)],
-            ),
+            Expanded(child: CodePreview(controller.code.value)),
           ],
         );
       }),

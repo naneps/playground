@@ -85,18 +85,23 @@ class ToolsBarShadowView extends GetView<BoxShadowGeneratorController> {
                       shadow: shadow,
                       onColorChanged: (color) {
                         controller.onColorChanged(color);
+                        controller.generateCode();
                       },
                       onBlurRadiusChanged: (value) {
                         controller.onBlurRadiusChanged(value);
+                        controller.generateCode();
                       },
                       onSpreadRadiusChanged: (value) {
                         controller.onSpreadRadiusChanged(value);
+                        controller.generateCode();
                       },
                       onOffsetChanged: (value) {
+                        controller.generateCode();
                         controller.onOffsetChanged(value);
                       },
                       onBlurStyleChanged: (value) {
                         controller.onBlurStyleChanged(value);
+                        controller.generateCode();
                       },
                     ),
                   ),
