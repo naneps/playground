@@ -26,7 +26,8 @@ jobs:
       - name: Set up Flutter
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: '2.10.3'  # Specify a specific Flutter version here
+          flutter-version: '3.19.5'  # Ganti dengan versi Flutter yang sesuai
+          channel: 'stable'  # Pastikan menggunakan channel stable
 
       - name: Install dependencies
         run: flutter pub get
