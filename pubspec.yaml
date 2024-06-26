@@ -2,23 +2,21 @@ name: playground
 version: 0.1.0
 publish_to: none
 description: A new Flutter project.
-environment: 
-  sdk: '>=3.3.3 <4.0.0'
+environment:
+  sdk: ">=3.3.3 <4.0.0"
 
-dependencies: 
+dependencies:
   flutter_colorpicker: ^1.1.0
-  flutter_markdown: ^0.7.2+1
   get: 4.6.6
-  flutter: 
+  flutter:
     sdk: flutter
-  highlight: ^0.7.0
-  syntax_highlight: ^0.4.0
   markdown_widget: ^2.3.2+6
-dev_dependencies: 
+  material_design_icons_flutter: ^7.0.7296
+  url_launcher: ^6.3.0
+dev_dependencies:
   flutter_lints: ^3.0.0
-  flutter_test: 
+  flutter_test:
     sdk: flutter
 
-flutter: 
+flutter:
   uses-material-design: true
-

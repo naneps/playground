@@ -18,6 +18,16 @@ class AlignmentGeometryModel {
   AlignmentGeometry toAlignmentGeometry() {
     return Alignment(x, y);
   }
+
+  static Alignment center = const Alignment(0.0, 0.0);
+  static Alignment topLeft = const Alignment(-1.0, -1.0);
+  static Alignment topCenter = const Alignment(0.0, -1.0);
+  static Alignment topRight = const Alignment(1.0, -1.0);
+  static Alignment centerLeft = const Alignment(-1.0, 0.0);
+  static Alignment centerRight = const Alignment(1.0, 0.0);
+  static Alignment bottomLeft = const Alignment(-1.0, 1.0);
+  static Alignment bottomCenter = const Alignment(0.0, 1.0);
+  static Alignment bottomRight = const Alignment(1.0, 1.0);
 }
 
 class GradientColor {
@@ -36,7 +46,7 @@ class GradientModel {
   double radius;
   AlignmentGeometryModel? center;
 
-  TileMode tileMode;
+  TileModeType tileMode;
   double startAngle;
   double endAngle;
 
@@ -47,7 +57,7 @@ class GradientModel {
     this.stops,
     this.begin = Alignment.centerLeft,
     this.end = Alignment.centerRight,
-    this.tileMode = TileMode.clamp,
+    this.tileMode = TileModeType.clamp,
     this.radius = 0.5,
     this.center,
     this.startAngle = 0.0,
@@ -63,7 +73,7 @@ class GradientModel {
           stops: stops?.map((e) => e.stop).toList(),
           begin: begin,
           end: end,
-          tileMode: tileMode,
+          tileMode: tileMode.tileMode,
         ).obs;
       case GradientType.radial:
         return RadialGradient(
@@ -71,7 +81,7 @@ class GradientModel {
           stops: stops?.map((e) => e.stop).toList(),
           center: center?.toAlignmentGeometry() ?? Alignment.center,
           radius: radius,
-          tileMode: tileMode,
+          tileMode: tileMode.tileMode,
         ).obs;
       case GradientType.sweep:
         return SweepGradient(
@@ -80,14 +90,105 @@ class GradientModel {
           center: center?.toAlignmentGeometry() ?? Alignment.center,
           startAngle: startAngle,
           endAngle: endAngle,
-          tileMode: tileMode,
+          tileMode: tileMode.tileMode,
         ).obs;
     }
+  }
+
+  String toCode() {
+    final StringBuffer buffer = StringBuffer();
+
+    buffer.writeln('```dart');
+    buffer.writeln('Container(');
+    buffer.writeln('  width: 200,');
+    buffer.writeln('  height: 200,');
+    buffer.writeln('  decoration: BoxDecoration(');
+    buffer.writeln('    gradient: ${gradientCode()},');
+    buffer.writeln('  ),');
+    buffer.writeln(');');
+    buffer.writeln('```');
+
+    return buffer.toString();
+  }
+
+  String gradientCode() {
+    switch (type) {
+      case GradientType.linear:
+        return _linearGradientCode();
+      case GradientType.radial:
+        return _radialGradientCode();
+      case GradientType.sweep:
+        return _sweepGradientCode();
+      default:
+        return '';
+    }
+  }
+
+  String _linearGradientCode() {
+    return 'LinearGradient(\n'
+        '  begin: ${_alignmentCode(begin)},\n'
+        '  end: ${_alignmentCode(end)},\n'
+        '  colors: ${_colorsCode()},\n'
+        '  stops: ${_stopsCode()},\n'
+        ')';
+  }
+
+  String _radialGradientCode() {
+    return 'RadialGradient(\n'
+        '  center: ${_alignmentCode(center!.toAlignmentGeometry())},\n'
+        '  radius: 0.5,\n'
+        '  colors: ${_colorsCode()},\n'
+        '  stops: ${_stopsCode()},\n'
+        ')';
+  }
+
+  String _sweepGradientCode() {
+    return 'SweepGradient(\n'
+        '  center: ${_alignmentCode(center!.toAlignmentGeometry())},\n'
+        '  startAngle: $startAngle,\n'
+        '  endAngle: $endAngle,\n'
+        '  colors: ${_colorsCode()},\n'
+        '  stops: ${_stopsCode()},\n'
+        ')';
+  }
+
+  String _alignmentCode(AlignmentGeometry alignment) {
+    if (alignment is Alignment) {
+      return 'Alignment(${alignment.x}, ${alignment.y})';
+    } else {
+      return alignment.toString();
+    }
+  }
+
+  String _colorsCode() {
+    return '[\n    ${colors.map((color) => 'Color(${color.color.value})').join(',\n    ')}\n  ]';
+  }
+
+  String _stopsCode() {
+    if (stops == null) {
+      return 'null';
+    }
+    return '[\n    ${stops!.map((stop) => stop.stop.toString()).join(',\n    ')}\n  ]';
   }
 }
 
 // Enum to represent the gradient types
 enum GradientType { linear, radial, sweep }
+
+enum TileModeType { clamp, mirror, repeat }
+
+extension TileModeExtension on TileModeType {
+  TileMode get tileMode {
+    switch (this) {
+      case TileModeType.clamp:
+        return TileMode.clamp;
+      case TileModeType.mirror:
+        return TileMode.mirror;
+      case TileModeType.repeat:
+        return TileMode.repeated;
+    }
+  }
+}
 
 // Model to represent the gradient configuration
 class StopModel {

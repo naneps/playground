@@ -20,19 +20,46 @@ class ToolsBarGradientView extends GetView<GradientGeneratorController> {
         child: Obx(() {
           return ListView(
             children: [
-              ActionChipsSelector<GradientType>(
-                items: GradientType.values,
-                label: 'Gradient Type',
-                titleBuilder: (type) => type.toString().split('.').last,
-                initialValues: [controller.gradient.value.type],
-                onChanged: (selectedValues) {
-                  // Handle single selection
-                  if (selectedValues.isNotEmpty) {
-                    GradientType selectedType = selectedValues.first;
-                    controller.onGradientTypeChanged(selectedType);
-                  }
-                },
-                multipleSelection: false,
+              Container(
+                padding: const EdgeInsets.all(10),
+                decoration: const BoxDecoration(),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: ActionChipsSelector<GradientType>(
+                        items: GradientType.values,
+                        label: 'Gradient Type',
+                        titleBuilder: (type) => type.toString().split('.').last,
+                        initialValues: [controller.gradient.value.type],
+                        onChanged: (selectedValues) {
+                          // Handle single selection
+                          if (selectedValues.isNotEmpty) {
+                            GradientType selectedType = selectedValues.first;
+                            controller.onGradientTypeChanged(selectedType);
+                          }
+                        },
+                        multipleSelection: false,
+                      ),
+                    ),
+                    const SizedBox(width: 10),
+                    Expanded(
+                      child: ActionChipsSelector<TileModeType>(
+                        items: TileModeType.values,
+                        label: 'Tile Mode',
+                        titleBuilder: (type) => type.toString().split('.').last,
+                        initialValues: [controller.gradient.value.tileMode],
+                        onChanged: (selectedValues) {
+                          // Handle single selection
+                          if (selectedValues.isNotEmpty) {
+                            TileModeType selectedType = selectedValues.first;
+                            controller.onTileModeChanged(selectedType);
+                          }
+                        },
+                        multipleSelection: false,
+                      ),
+                    ),
+                  ],
+                ),
               ),
               //
               const SizedBox(height: 10),
@@ -40,6 +67,7 @@ class ToolsBarGradientView extends GetView<GradientGeneratorController> {
                 initialColors: controller.gradient.value.colors
                     .map((e) => e.color)
                     .toList(),
+                minColors: 2,
                 onColorsChanged: (value) {
                   controller.onColorsChanged(value);
                 },
@@ -54,35 +82,72 @@ class ToolsBarGradientView extends GetView<GradientGeneratorController> {
                 padding: const EdgeInsets.all(10),
                 child: Column(
                   children: [
-                    Text(
-                      'Gradient Settings',
-                      style: Theme.of(context).textTheme.labelMedium,
-                    ),
+                    Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            'Gradient Settings',
+                            style: Theme.of(context).textTheme.labelMedium,
+                          ),
+                          // button clear stops
+                          if (controller.gradient.value.stops != null) ...[
+                            TextButton(
+                              onPressed: () {
+                                controller.removeStops();
+                              },
+                              child: const Text('Clear Stops'),
+                            ),
+                          ] else ...[
+                            // button add stops
+                            TextButton(
+                              onPressed: () {
+                                controller.onAddStops();
+                              },
+                              child: const Text('Add Stops'),
+                            ),
+                          ],
+                        ]),
                     const SizedBox(height: 10),
-                    GridView.builder(
-                      gridDelegate:
-                          const SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 2,
-                        crossAxisSpacing: 10,
-                        mainAxisSpacing: 10,
-                        childAspectRatio: 2.5,
-                      ),
-                      shrinkWrap: true,
-                      physics: const NeverScrollableScrollPhysics(),
-                      itemCount: controller.gradient.value.stops!.length,
-                      itemBuilder: (context, index) {
-                        return CustomSlider(
-                          label: "Stop ${index + 1}",
-                          value: controller.gradient.value.stops![index].stop,
-                          min: -10,
-                          max: 10,
-                          onChanged: (value) {
-                            controller.onStopValueChanged(index, value);
-                          },
-                          canEdit: false,
-                        );
-                      },
-                    )
+                    if (controller.gradient.value.stops != null) ...[
+                      GridView.builder(
+                        gridDelegate:
+                            const SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 2,
+                          crossAxisSpacing: 10,
+                          mainAxisSpacing: 10,
+                          childAspectRatio: 3.5,
+                        ),
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        itemCount: controller.gradient.value.stops!.length,
+                        itemBuilder: (context, index) {
+                          return Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Expanded(
+                                child: CustomSlider(
+                                  label: "Stop ${index + 1}",
+                                  value: controller
+                                      .gradient.value.stops![index].stop,
+                                  min: 0,
+                                  max: 1,
+                                  onChanged: (value) {
+                                    controller.onStopValueChanged(index, value);
+                                  },
+                                  canEdit: false,
+                                ),
+                              ),
+                              CircleAvatar(
+                                backgroundColor: controller
+                                    .gradient.value.stops![index].color,
+                                radius: 10,
+                              ),
+                            ],
+                          );
+                        },
+                      )
+                    ],
                   ],
                 ),
               ),

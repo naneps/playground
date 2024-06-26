@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
+import 'package:playground/app/common/ui/code_preview.dart';
 import 'package:playground/app/modules/gradient_generator/controllers/gradient_generator_controller.dart';
 
 class GradientPreviewView extends GetView<GradientGeneratorController> {
@@ -10,19 +10,46 @@ class GradientPreviewView extends GetView<GradientGeneratorController> {
   @override
   Widget build(BuildContext context) {
     return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        Obx(() {
-          return AnimatedContainer(
-            duration: const Duration(milliseconds: 500),
-            width: 300,
-            height: 300,
-            decoration: BoxDecoration(
-              gradient: controller.gradient.value.toGradient().value,
-            ),
-          );
-        })
+        TabBar(controller: controller.previewTabController, tabs: const [
+          //  preview
+          // code
+          Tab(
+            text: 'Preview',
+          ),
+          Tab(
+            text: 'Code',
+          ),
+        ]),
+        Expanded(
+          child: TabBarView(
+            controller: controller.previewTabController,
+            children: [
+              // preview
+              Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Obx(() {
+                    return AnimatedContainer(
+                      duration: const Duration(milliseconds: 500),
+                      width: 300,
+                      height: 300,
+                      decoration: BoxDecoration(
+                        gradient: controller.gradient.value.toGradient().value,
+                      ),
+                    );
+                  }),
+                ],
+              ),
+              // code
+              Obx(() {
+                return CodePreview(controller.code.value);
+              })
+            ],
+          ),
+        ),
       ],
     );
   }

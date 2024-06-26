@@ -30,8 +30,9 @@ class _ActionChipsSelectorState<T> extends State<ActionChipsSelector<T>> {
   @override
   Widget build(BuildContext context) {
     return Container(
+      padding: const EdgeInsets.all(10),
       decoration: BoxDecoration(
-        color: Colors.grey.shade100,
+        color: Colors.white,
         borderRadius: BorderRadius.circular(10),
       ),
       child: Column(
@@ -44,6 +45,7 @@ class _ActionChipsSelectorState<T> extends State<ActionChipsSelector<T>> {
           ),
           const SizedBox(height: 10),
           SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
             child: Row(
               children: [
                 ...widget.items.asMap().entries.map((e) {

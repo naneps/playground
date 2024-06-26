@@ -22,6 +22,43 @@ class CodePreview extends StatelessWidget {
         tocController: TocController(),
         config: MarkdownConfig(configs: [
           PreConfig(
+            theme: {
+              'comment':
+                  const TextStyle(color: Color.fromARGB(255, 57, 31, 255)),
+              'quote': const TextStyle(color: Color.fromARGB(255, 6, 27, 255)),
+              'variable': const TextStyle(color: Color(0xffd91e18)),
+              'template-variable': const TextStyle(color: Color(0xffd91e18)),
+              'tag': const TextStyle(color: Color(0xffd91e18)),
+              'name': const TextStyle(color: Color(0xffd91e18)),
+              'selector-id': const TextStyle(color: Color(0xffd91e18)),
+              'selector-class': const TextStyle(color: Color(0xffd91e18)),
+              'regexp': const TextStyle(color: Color(0xffd91e18)),
+              'deletion': const TextStyle(color: Color(0xffd91e18)),
+              'number': const TextStyle(color: Color(0xffaa5d00)),
+              'built_in': const TextStyle(color: Color(0xffaa5d00)),
+              'builtin-name': const TextStyle(color: Color(0xffaa5d00)),
+              'literal': const TextStyle(color: Color(0xffaa5d00)),
+              'type': const TextStyle(color: Color(0xffaa5d00)),
+              'params': const TextStyle(color: Color(0xffaa5d00)),
+              'meta': const TextStyle(color: Color(0xffaa5d00)),
+              'link': const TextStyle(color: Color(0xffaa5d00)),
+              'attribute': const TextStyle(color: Color(0xffaa5d00)),
+              'string': const TextStyle(color: Color(0xff008000)),
+              'symbol': const TextStyle(color: Color(0xff008000)),
+              'bullet': const TextStyle(color: Color(0xff008000)),
+              'addition': const TextStyle(color: Color(0xff008000)),
+              'title': const TextStyle(color: Color.fromARGB(255, 0, 191, 255)),
+              'section':
+                  const TextStyle(color: Color.fromARGB(255, 0, 191, 255)),
+              'keyword':
+                  const TextStyle(color: Color.fromARGB(255, 188, 54, 255)),
+              'selector-tag':
+                  const TextStyle(color: Color.fromARGB(255, 190, 60, 255)),
+              'root': const TextStyle(
+                  backgroundColor: Color(0xfffefefe), color: Color(0xff545454)),
+              'emphasis': const TextStyle(fontStyle: FontStyle.italic),
+              'strong': const TextStyle(fontWeight: FontWeight.bold),
+            },
             decoration: BoxDecoration(
               color: Colors.black12,
               borderRadius: BorderRadius.circular(5),

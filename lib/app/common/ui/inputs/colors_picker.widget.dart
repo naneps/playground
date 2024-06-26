@@ -4,11 +4,13 @@ import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 class ColorPickerWidget extends StatefulWidget {
   final List<Color> initialColors;
   final ValueChanged<List<Color>> onColorsChanged;
+  final int minColors;
 
   const ColorPickerWidget({
     super.key,
     required this.initialColors,
     required this.onColorsChanged,
+    this.minColors = 1,
   });
 
   @override
@@ -17,6 +19,12 @@ class ColorPickerWidget extends StatefulWidget {
 
 class _ColorPickerWidgetState extends State<ColorPickerWidget> {
   late List<Color> colors;
+
+  @override
+  void initState() {
+    super.initState();
+    colors = List.from(widget.initialColors);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -35,45 +43,74 @@ class _ColorPickerWidgetState extends State<ColorPickerWidget> {
             style: Theme.of(context).textTheme.labelMedium,
           ),
           const SizedBox(height: 10),
-          SingleChildScrollView(
-            scrollDirection: Axis.horizontal,
-            child: Row(
-              children: [
-                ...colors.asMap().entries.map((e) {
-                  return Container(
-                    margin: const EdgeInsets.only(right: 5),
-                    padding: const EdgeInsets.all(5),
-                    decoration: BoxDecoration(
-                      color: e.value,
-                      borderRadius: BorderRadius.circular(5),
-                    ),
-                    child: Row(
-                      children: [
-                        IconButton(
-                          icon: const Icon(Icons.close),
-                          color: Colors.white,
-                          onPressed: () => _removeColor(e.key),
-                        ),
-                      ],
-                    ),
-                  );
-                }),
-                IconButton(
-                  icon: const Icon(Icons.add),
-                  onPressed: _showColorPicker,
-                ),
-              ],
-            ),
+          SizedBox(
+              height: 90,
+              child: ReorderableListView.builder(
+                  scrollDirection: Axis.horizontal,
+                  onReorder: _onReorder,
+                  footer: SizedBox(
+                    height: 90,
+                    child: _buildAddButton(),
+                  ),
+                  itemCount: colors.length,
+                  itemBuilder: (context, index) {
+                    return _buildColorItem(index);
+                  })),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildColorItem(int index) {
+    return Container(
+      key: ValueKey(colors[index]),
+      margin: const EdgeInsets.only(right: 5),
+      padding: const EdgeInsets.all(5),
+      decoration: BoxDecoration(
+        color: colors[index],
+        borderRadius: BorderRadius.circular(5),
+      ),
+      child: Row(
+        children: [
+          IconButton(
+            icon: const Icon(Icons.palette),
+            color: Colors.white,
+            onPressed: () {
+              // Prevent removing if it would go below the minimum
+              if (colors.length > widget.minColors) {
+                _removeColor(index);
+              }
+            },
+          ),
+          const SizedBox(width: 5),
+          IconButton(
+            icon: const Icon(Icons.close),
+            color: Colors.white,
+            onPressed: () {
+              if (colors.length > widget.minColors) {
+                _removeColor(index);
+              }
+            },
           ),
         ],
       ),
     );
   }
 
-  @override
-  void initState() {
-    super.initState();
-    colors = List.from(widget.initialColors);
+  Widget _buildAddButton() {
+    return Container(
+      key: const ValueKey('add_button'),
+      margin: const EdgeInsets.only(right: 5),
+      padding: const EdgeInsets.all(5),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(5),
+        border: Border.all(color: Colors.grey.shade400),
+      ),
+      child: IconButton(
+        icon: const Icon(Icons.add),
+        onPressed: _showColorPicker,
+      ),
+    );
   }
 
   void _addColor(Color color) {
@@ -112,20 +149,30 @@ class _ColorPickerWidgetState extends State<ColorPickerWidget> {
               children: [
                 ColorPicker(
                   pickerColor: pickerColor,
-                  colorPickerWidth: 300.0,
                   portraitOnly: true,
                   onColorChanged: (color) {
                     pickerColor = color;
                   },
                 ),
-                ElevatedButton(
-                  onPressed: () {
-                    setState(() {
-                      _addColor(pickerColor);
-                      Navigator.of(context).pop();
-                    });
-                  },
-                  child: const Text('Select'),
+                Padding(
+                  padding: const EdgeInsets.all(10),
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.white,
+                      foregroundColor: Colors.black,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(5),
+                      ),
+                      side: const BorderSide(color: Colors.black, width: 1),
+                    ),
+                    onPressed: () {
+                      setState(() {
+                        _addColor(pickerColor);
+                        Navigator.of(context).pop();
+                      });
+                    },
+                    child: const Text('Select'),
+                  ),
                 ),
               ],
             ),
@@ -133,5 +180,16 @@ class _ColorPickerWidgetState extends State<ColorPickerWidget> {
         );
       },
     );
+  }
+
+  void _onReorder(int oldIndex, int newIndex) {
+    setState(() {
+      if (newIndex > oldIndex) {
+        newIndex -= 1;
+      }
+      final color = colors.removeAt(oldIndex);
+      colors.insert(newIndex, color);
+      widget.onColorsChanged(colors);
+    });
   }
 }
