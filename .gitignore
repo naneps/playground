@@ -29,7 +29,12 @@ migrate_working_dir/
 .flutter-plugins-dependencies
 .pub-cache/
 .pub/
-/build/
+# Only include build/web/
+!/build/web/
+
+# Exclude other build directories
+!/build/app/outputs/flutter-apk/
+!/build/windows/
 
 # Symbolication related
 app.*.symbols

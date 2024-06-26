@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_highlight/themes/a11y-light.dart';
 import 'package:markdown_widget/markdown_widget.dart';
 
 class CodePreview extends StatelessWidget {
@@ -22,20 +21,16 @@ class CodePreview extends StatelessWidget {
         data: code,
         tocController: TocController(),
         config: MarkdownConfig(configs: [
-          const HrConfig(),
-          const H1Config(),
-          const H2Config(),
-          const H3Config(),
-          const H4Config(),
-          const H5Config(),
-          const H6Config(),
           PreConfig(
-            theme: a11yLightTheme,
             decoration: BoxDecoration(
               color: Colors.black12,
               borderRadius: BorderRadius.circular(5),
             ),
             language: 'dart',
+            textStyle: const TextStyle(
+              fontSize: 14,
+              fontFamily: 'monospace',
+            ),
             wrapper: (child, code, language) => CodeWrapperWidget(
               child,
               code,

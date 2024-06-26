@@ -62,4 +62,28 @@ class BoxShadowModel {
         'blurStyle: $blurStyle,'
         ')';
   }
+
+  String toCss() {
+    return 'box-shadow: ${offset.dx}px ${offset.dy}px $blurRadius $spreadRadius $color;';
+  }
+
+  String toCSS() {
+    final colorString = color.toString().substring(10, 16);
+    return 'box-shadow: ${offset.dx}px ${offset.dy}px $blurRadius $spreadRadius #$colorString ${blurStyle.toCSS()};';
+  }
+}
+
+extension on BlurStyle {
+  String toCSS() {
+    switch (this) {
+      case BlurStyle.normal:
+        return 'normal';
+      case BlurStyle.solid:
+        return 'solid';
+      case BlurStyle.outer:
+        return 'outer';
+      case BlurStyle.inner:
+        return 'inner';
+    }
+  }
 }

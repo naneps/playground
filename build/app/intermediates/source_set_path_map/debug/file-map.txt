@@ -1,0 +1,15 @@
+com.example.playground.app-jetified-window-1.0.0-beta04-0 C:\Users\DEV_Flutter\.gradle\caches\transforms-3\032f4dff274e516110d9363a9793a3e3\transformed\jetified-window-1.0.0-beta04\res
+com.example.playground.app-core-1.10.1-1 C:\Users\DEV_Flutter\.gradle\caches\transforms-3\0b9c903fef8d2eb2a269c36999ef4a74\transformed\core-1.10.1\res
+com.example.playground.app-jetified-window-java-1.0.0-beta04-2 C:\Users\DEV_Flutter\.gradle\caches\transforms-3\142c24f2530665bb6deb4123ab140714\transformed\jetified-window-java-1.0.0-beta04\res
+com.example.playground.app-lifecycle-runtime-2.3.1-3 C:\Users\DEV_Flutter\.gradle\caches\transforms-3\25a884faa36a531a9e5f369d596bbf88\transformed\lifecycle-runtime-2.3.1\res
+com.example.playground.app-browser-1.5.0-4 C:\Users\DEV_Flutter\.gradle\caches\transforms-3\a3fbb37dd5ef93c98bc80ddf0289d0af\transformed\browser-1.5.0\res
+com.example.playground.app-jetified-annotation-experimental-1.3.0-5 C:\Users\DEV_Flutter\.gradle\caches\transforms-3\ae329bc8a0eb87982c4fe41e3ec5da7f\transformed\jetified-annotation-experimental-1.3.0\res
+com.example.playground.app-debug-6 D:\FLUTTER PROJECT\playground\android\app\src\debug\res
+com.example.playground.app-main-7 D:\FLUTTER PROJECT\playground\android\app\src\main\res
+com.example.playground.app-pngs-8 D:\FLUTTER PROJECT\playground\build\app\generated\res\pngs\debug
+com.example.playground.app-resValues-9 D:\FLUTTER PROJECT\playground\build\app\generated\res\resValues\debug
+com.example.playground.app-rs-10 D:\FLUTTER PROJECT\playground\build\app\generated\res\rs\debug
+com.example.playground.app-mergeDebugResources-11 D:\FLUTTER PROJECT\playground\build\app\intermediates\incremental\debug\mergeDebugResources\merged.dir
+com.example.playground.app-mergeDebugResources-12 D:\FLUTTER PROJECT\playground\build\app\intermediates\incremental\debug\mergeDebugResources\stripped.dir
+com.example.playground.app-merged_res-13 D:\FLUTTER PROJECT\playground\build\app\intermediates\merged_res\debug
+com.example.playground.app-packaged_res-14 D:\FLUTTER PROJECT\playground\build\url_launcher_android\intermediates\packaged_res\debug

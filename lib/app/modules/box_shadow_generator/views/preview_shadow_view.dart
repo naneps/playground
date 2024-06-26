@@ -8,75 +8,85 @@ class PreviewShadowView extends GetView<BoxShadowGeneratorController> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Obx(() {
-        return Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          mainAxisAlignment: MainAxisAlignment.start,
-          mainAxisSize: MainAxisSize.max,
-          children: [
-            TabBar(
+    return Obx(() {
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        mainAxisAlignment: MainAxisAlignment.start,
+        mainAxisSize: MainAxisSize.max,
+        children: [
+          TabBar(
+            controller: controller.tabPreviewController,
+            tabAlignment: TabAlignment.start,
+            isScrollable: true,
+            onTap: (index) {
+              controller.tabPreviewController.index = index;
+              controller.generateCode();
+            },
+            tabs: const [
+              SizedBox(
+                height: 30,
+                child: Row(
+                  children: [
+                    Icon(Icons.settings),
+                    Text('Preview'),
+                  ],
+                ),
+              ),
+              SizedBox(
+                height: 30,
+                child: Row(
+                  children: [
+                    Icon(Icons.code),
+                    Text('Code'),
+                  ],
+                ),
+              ),
+            ],
+          ),
+          Expanded(
+            child: TabBarView(
               controller: controller.tabPreviewController,
-              tabAlignment: TabAlignment.start,
-              isScrollable: true,
-              onTap: (index) {
-                controller.tabPreviewController.index = index;
-                controller.generateCode();
-              },
-              tabs: const [
-                Tab(
-                  text: 'Preview',
+              children: [
+                Container(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Container(
+                        width: 200,
+                        height: 200,
+                        decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(10),
+                            boxShadow: [
+                              ...controller.boxShadows.map(
+                                (e) {
+                                  return BoxShadow(
+                                    color: e.color,
+                                    blurRadius: e.blurRadius,
+                                    spreadRadius: e.spreadRadius,
+                                    offset: e.offset,
+                                    blurStyle: e.blurStyle,
+                                  );
+                                },
+                              ),
+                            ]),
+                        child: Center(
+                          child: Text(
+                            'Preview',
+                            style: Theme.of(context).textTheme.titleLarge,
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
                 ),
-                Tab(
-                  text: 'Code',
-                ),
+                CodePreview(controller.code.value),
               ],
             ),
-            Expanded(
-              child: TabBarView(
-                controller: controller.tabPreviewController,
-                children: [
-                  Container(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Container(
-                          width: 200,
-                          height: 200,
-                          decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(10),
-                              boxShadow: [
-                                ...controller.boxShadows.map(
-                                  (e) {
-                                    return BoxShadow(
-                                      color: e.color,
-                                      blurRadius: e.blurRadius,
-                                      spreadRadius: e.spreadRadius,
-                                      offset: e.offset,
-                                      blurStyle: e.blurStyle,
-                                    );
-                                  },
-                                ),
-                              ]),
-                          child: Center(
-                            child: Text(
-                              'Preview',
-                              style: Theme.of(context).textTheme.titleLarge,
-                            ),
-                          ),
-                        )
-                      ],
-                    ),
-                  ),
-                  CodePreview(controller.code.value),
-                ],
-              ),
-            ),
-          ],
-        );
-      }),
-    );
+          ),
+        ],
+      );
+    });
   }
 }

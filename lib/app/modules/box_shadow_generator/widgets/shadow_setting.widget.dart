@@ -125,27 +125,37 @@ class _ShadowSettingWidgetState extends State<ShadowSettingWidget> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const Text('Blur Style:'),
-              const SizedBox(height: 10),
-              DropdownButtonFormField(
-                value: widget.shadow.blurStyle,
-                style: const TextStyle(
-                  color: Colors.black,
+              SingleChildScrollView(
+                child: Row(
+                  children: [
+                    ...BlurStyle.values.map(
+                      (e) {
+                        return Row(
+                          children: [
+                            Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 5),
+                              child: ActionChip(
+                                avatar: widget.shadow.blurStyle == e
+                                    ? const Icon(
+                                        Icons.check,
+                                        size: 18,
+                                        color: Colors.green,
+                                      )
+                                    : null,
+                                label: Text(e.toString().split('.').last),
+                                onPressed: () {
+                                  widget.onBlurStyleChanged(e);
+                                },
+                              ),
+                            ),
+                          ],
+                        );
+                      },
+                    ),
+                  ],
                 ),
-                dropdownColor: Colors.white,
-                items: BlurStyle.values
-                    .map(
-                      (e) => DropdownMenuItem(
-                        value: e,
-                        child: Text(
-                          e.toString().split('.').last,
-                        ),
-                      ),
-                    )
-                    .toList(),
-                onChanged: (value) {
-                  widget.onBlurStyleChanged(value as BlurStyle);
-                },
-              ),
+              )
             ],
           ),
         ),
