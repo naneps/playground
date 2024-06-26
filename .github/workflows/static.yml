@@ -35,16 +35,13 @@ jobs:
         run: flutter build web --release
 
       - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
+        uses: actions/upload-artifact@v2
         with:
+          name: web-build
           path: build/web
 
       - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4
+        uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
+          publish_dir: build/web
