@@ -1,0 +1,6 @@
+# _config.yml
+title: Your Site Title
+description: Description of your site
+theme: minima  # or your chosen theme
+source: docs   # specify the source directory where Jekyll will build from
+destination: _site  # specify the destination directory where Jekyll will output to
