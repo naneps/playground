@@ -7,10 +7,10 @@ class CustomSlider extends StatefulWidget {
   final double min;
   final double max;
   final ValueChanged<double> onChanged;
-  final ValueChanged<double> onMaxChanged;
-  final ValueChanged<double> onMinChanged;
+  final ValueChanged<double>? onMaxChanged;
+  final ValueChanged<double>? onMinChanged;
   final bool hasMin;
-
+  final bool canEdit;
   const CustomSlider({
     super.key,
     required this.label,
@@ -18,9 +18,10 @@ class CustomSlider extends StatefulWidget {
     required this.min,
     required this.max,
     required this.onChanged,
-    required this.onMaxChanged,
-    required this.onMinChanged,
+    this.onMaxChanged,
+    this.onMinChanged,
     this.hasMin = true,
+    this.canEdit = true,
   });
 
   @override
@@ -80,13 +81,16 @@ class _CustomSliderState extends State<CustomSlider> {
           widget.label,
           style: Theme.of(context).textTheme.labelMedium,
         ),
-        IconButton(
-          icon: Icon(isUpdated ? Icons.arrow_drop_up : Icons.arrow_drop_down),
-          onPressed: () {
-            setState(() {
-              isUpdated = !isUpdated;
-            });
-          },
+        Visibility(
+          visible: widget.canEdit,
+          child: IconButton(
+            icon: Icon(isUpdated ? Icons.arrow_drop_up : Icons.arrow_drop_down),
+            onPressed: () {
+              setState(() {
+                isUpdated = !isUpdated;
+              });
+            },
+          ),
         ),
       ],
     );
@@ -129,7 +133,7 @@ class _CustomSliderState extends State<CustomSlider> {
                 setState(() {
                   minErrorText = null;
                 });
-                widget.onMinChanged(minValue);
+                widget.onMinChanged!(minValue);
                 _updateSliderValue();
               }
             },
@@ -150,7 +154,7 @@ class _CustomSliderState extends State<CustomSlider> {
               setState(() {
                 maxErrorText = null;
               });
-              widget.onMaxChanged(maxValue);
+              widget.onMaxChanged!(maxValue);
               _updateSliderValue();
             }
           },
@@ -162,12 +166,13 @@ class _CustomSliderState extends State<CustomSlider> {
 
   Widget _buildSliderWithValue() {
     return Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.center,
       mainAxisSize: MainAxisSize.max,
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
         Expanded(
           child: Slider(
+            thumbColor: Theme.of(context).primaryColor,
             value: sliderValue,
             min: widget.min,
             max: widget.max,
@@ -189,7 +194,8 @@ class _CustomSliderState extends State<CustomSlider> {
 
   Widget _buildSmallScreen() {
     return Column(
-      mainAxisSize: MainAxisSize.max,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.center,
       children: [
         _buildLabelWithIcon(),
         _buildSliderWithValue(),
@@ -201,6 +207,8 @@ class _CustomSliderState extends State<CustomSlider> {
   Widget _buildWideScreen() {
     return Row(
       mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.start,
       children: [
         Expanded(child: Text(widget.label)),
         Expanded(
@@ -221,13 +229,16 @@ class _CustomSliderState extends State<CustomSlider> {
           width: 50,
           child: Text(sliderValue.toStringAsFixed(1)),
         ),
-        IconButton(
-          icon: Icon(isUpdated ? Icons.check : Icons.edit),
-          onPressed: () {
-            setState(() {
-              isUpdated = !isUpdated;
-            });
-          },
+        Visibility(
+          visible: widget.canEdit,
+          child: IconButton(
+            icon: Icon(isUpdated ? Icons.check : Icons.edit),
+            onPressed: () {
+              setState(() {
+                isUpdated = !isUpdated;
+              });
+            },
+          ),
         ),
         if (isUpdated)
           Expanded(
