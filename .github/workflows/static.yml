@@ -35,11 +35,14 @@ jobs:
       - name: Build Flutter web
         run: flutter build web --release
 
-      - name: Move build/web to docs
-        run: mv build/web docs
+      - name: Upload artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: web-build
+          path: build/web
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.TOKEN }}
-          publish_dir: docs
+          publish_dir: build/web
