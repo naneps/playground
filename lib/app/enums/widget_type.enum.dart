@@ -1,0 +1,15 @@
+enum WidgetType {
+  Container,
+  Column,
+  SizedBox,
+  Row,
+  ListView,
+  GridView,
+  Stack,
+  Positioned,
+  Center,
+  Align,
+  AspectRatio,
+  ConstrainedBox,
+  Expanded,
+}

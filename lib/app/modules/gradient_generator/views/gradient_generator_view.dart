@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
-
 import 'package:get/get.dart';
 
 import '../controllers/gradient_generator_controller.dart';
 
 class GradientGeneratorView extends GetView<GradientGeneratorController> {
-  const GradientGeneratorView({Key? key}) : super(key: key);
+  const GradientGeneratorView({super.key});
   @override
   Widget build(BuildContext context) {
     return Scaffold(

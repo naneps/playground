@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class ThemeApp {
-  Color primaryColor = const Color.fromARGB(255, 11, 35, 172);
+  Color primaryColor = const Color.fromARGB(255, 0, 42, 158);
   Color secondaryColor = const Color.fromARGB(255, 116, 197, 255);
   Color tertiaryColor = const Color.fromARGB(255, 255, 116, 116);
   Color backgroundColor = const Color.fromARGB(255, 252, 252, 252);
@@ -155,12 +155,10 @@ class ThemeApp {
       ),
       tabBarTheme: TabBarTheme(
         labelColor: primaryColor,
-        indicatorSize: TabBarIndicatorSize.label,
         indicatorColor: primaryColor,
+        dividerColor: Colors.transparent,
         splashFactory: InkRipple.splashFactory,
-        labelPadding: const EdgeInsets.symmetric(horizontal: 10),
         unselectedLabelColor: Colors.grey.shade400,
-        tabAlignment: TabAlignment.start,
         labelStyle: const TextStyle(
           fontSize: 12,
           fontWeight: FontWeight.bold,
@@ -206,6 +204,9 @@ class ThemeApp {
       sliderTheme: SliderThemeData(
         activeTrackColor: primaryColor,
         inactiveTrackColor: Colors.grey.shade300,
+        valueIndicatorShape: const PaddleSliderValueIndicatorShape(),
+        trackShape: const RoundedRectSliderTrackShape(),
+        activeTickMarkColor: primaryColor,
         thumbColor: primaryColor,
         overlayColor: primaryColor.withOpacity(0.3),
         valueIndicatorColor: primaryColor,
@@ -225,6 +226,19 @@ class ThemeApp {
               ),
             ),
           )),
+      colorScheme: ColorScheme(
+        background: backgroundColor,
+        brightness: Brightness.light,
+        error: errorColor,
+        onBackground: textColor,
+        onError: Colors.white,
+        onPrimary: Colors.white,
+        onSecondary: Colors.white,
+        onSurface: textColor,
+        primary: primaryColor,
+        secondary: secondaryColor,
+        surface: Colors.white,
+      ),
     );
   }
 }

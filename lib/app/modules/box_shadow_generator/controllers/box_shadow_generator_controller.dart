@@ -14,7 +14,7 @@ class BoxShadowGeneratorController extends GetxController
     ),
   ].obs;
   late TabController tabController;
-  late Worker _worker;
+  late TabController tabPreviewController;
   RxString code = ''.obs;
   void generateCode() {
     final StringBuffer buffer = StringBuffer();
@@ -56,6 +56,7 @@ class BoxShadowGeneratorController extends GetxController
         blurStyle: BlurStyle.normal,
       ),
     );
+    updateTabController();
     generateCode();
   }
 
@@ -72,7 +73,6 @@ class BoxShadowGeneratorController extends GetxController
   @override
   void onClose() {
     tabController.dispose();
-    _worker.dispose();
     super.onClose();
   }
 
@@ -85,14 +85,12 @@ class BoxShadowGeneratorController extends GetxController
   void onInit() {
     // TODO: implement onInit
     super.onInit();
-    tabController = TabController(
-      length: boxShadows.length + 1,
-      vsync: this,
-    );
-    ever(boxShadows, (_) {
-      updateTabController();
-      generateCode();
-    });
+    tabController = TabController(length: boxShadows.length, vsync: this);
+    tabPreviewController = TabController(length: 2, vsync: this);
+    // ever(boxShadows, (_) {
+    //   updateTabController();
+    //   generateCode();
+    // });
   }
 
   void onOffsetChanged(Offset value) {
@@ -102,6 +100,8 @@ class BoxShadowGeneratorController extends GetxController
 
   void onRemoveShadow(int key) {
     boxShadows.removeAt(key);
+    tabController.index = boxShadows.length - 1;
+    updateTabController();
   }
 
   void onSpreadRadiusChanged(double value) {
@@ -112,10 +112,12 @@ class BoxShadowGeneratorController extends GetxController
   void updateTabController() {
     tabController = TabController(
       initialIndex: tabController.index,
-      length: boxShadows.length + 1,
+      length: boxShadows.length,
       vsync: this,
     );
-    tabController.animateTo(boxShadows.length - 1);
+    tabController.animateTo(
+      boxShadows.length - 1,
+    );
     update(); // Notify GetX to update the UI
   }
 }

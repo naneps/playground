@@ -16,20 +16,18 @@ class BoxShadowGeneratorView extends GetView<BoxShadowGeneratorController> {
         centerTitle: true,
         elevation: 0,
       ),
-      body: const SafeArea(
-        child: ResponsiveLayout(
-          mobile: Column(
-            children: [
-              Expanded(child: PreviewShadowView()),
-              Expanded(child: ToolsBarShadowView()),
-            ],
-          ),
-          tablet: Row(
-            children: [
-              Expanded(child: PreviewShadowView()),
-              Expanded(child: ToolsBarShadowView()),
-            ],
-          ),
+      body: const ResponsiveLayout(
+        mobile: Column(
+          children: [
+            Expanded(child: PreviewShadowView()),
+            Expanded(child: ToolsBarShadowView()),
+          ],
+        ),
+        tablet: Row(
+          children: [
+            Expanded(child: PreviewShadowView()),
+            Expanded(child: ToolsBarShadowView()),
+          ],
         ),
       ),
     );

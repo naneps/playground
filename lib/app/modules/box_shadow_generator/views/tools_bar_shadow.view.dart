@@ -10,67 +10,61 @@ class ToolsBarShadowView extends GetView<BoxShadowGeneratorController> {
   Widget build(BuildContext context) {
     return Obx(() {
       return Container(
-        padding: const EdgeInsets.all(10),
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: Colors.grey.shade100,
           borderRadius: BorderRadius.circular(10),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.grey.withOpacity(0.5),
-              spreadRadius: 5,
-              blurRadius: 7,
-              offset: const Offset(0, 3),
-            ),
-          ],
         ),
+        padding: const EdgeInsets.all(10),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            TabBar(
-              physics: const BouncingScrollPhysics(),
-              controller: controller.tabController,
-              isScrollable: true,
-              tabs: [
-                ...controller.boxShadows.asMap().entries.map(
-                  (e) {
-                    return Tab(
-                      height: 30,
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Text(
-                            'Shadow ${e.key + 1}',
-                          ),
-                          Visibility(
-                            visible: e.key != 0,
-                            child: IconButton(
-                              padding: EdgeInsets.zero,
-                              iconSize: 20,
-                              style: ButtonStyle(
-                                foregroundColor:
-                                    MaterialStateProperty.all<Color>(
-                                        Colors.redAccent),
-                              ),
-                              splashRadius: 20,
-                              onPressed: () {
-                                controller.onRemoveShadow(e.key);
-                              },
-                              icon: const Icon(
-                                Icons.close,
-                              ),
+            Row(
+              children: [
+                Expanded(
+                  child: TabBar(
+                    physics: const BouncingScrollPhysics(),
+                    controller: controller.tabController,
+                    isScrollable: true,
+                    tabAlignment: TabAlignment.start,
+                    tabs: [
+                      ...controller.boxShadows.asMap().entries.map(
+                        (e) {
+                          return Tab(
+                            height: 30,
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Text(
+                                  'Shadow ${e.key + 1}',
+                                ),
+                                Visibility(
+                                  visible: e.key != 0,
+                                  child: IconButton(
+                                    padding: EdgeInsets.zero,
+                                    iconSize: 20,
+                                    splashRadius: 20,
+                                    onPressed: () {
+                                      controller.onRemoveShadow(e.key);
+                                    },
+                                    icon: const Icon(
+                                      Icons.close,
+                                      color: Colors.grey,
+                                    ),
+                                  ),
+                                ),
+                              ],
                             ),
-                          ),
-                        ],
+                          );
+                        },
                       ),
-                    );
-                  },
+                    ],
+                  ),
                 ),
-                IconButton(
-                  padding: EdgeInsets.zero,
-                  iconSize: 20,
-                  onPressed: controller.onAddShadow,
+                IconButton.filled(
                   icon: const Icon(Icons.add),
+                  onPressed: controller.onAddShadow,
                 ),
               ],
             ),
@@ -78,7 +72,7 @@ class ToolsBarShadowView extends GetView<BoxShadowGeneratorController> {
             Expanded(
               child: TabBarView(
                 controller: controller.tabController,
-                physics: const BouncingScrollPhysics(),
+                physics: const NeverScrollableScrollPhysics(),
                 children: [
                   ...controller.boxShadows.map(
                     (shadow) => ShadowSettingWidget(
