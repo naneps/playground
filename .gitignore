@@ -1,3 +1,10 @@
+# Ignore everything in the build directory
+/build/*
+
+# Except for specific directories
+!/build/web/
+!/build/app/outputs/flutter-apk/
+
 # Miscellaneous
 *.class
 *.log
@@ -29,12 +36,6 @@ migrate_working_dir/
 .flutter-plugins-dependencies
 .pub-cache/
 .pub/
-# Only include build/web/
-!/build/web/
-
-# Exclude other build directories
-!/build/app/outputs/flutter-apk/
-!/build/windows/
 
 # Symbolication related
 app.*.symbols
