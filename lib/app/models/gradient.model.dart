@@ -121,7 +121,7 @@ class GradientModel {
         '  end: ${_alignmentCode(end!.toAlignmentGeometry())},\n'
         '  colors: ${_colorsCode()},\n'
         '  stops: ${_stopsCode()},\n'
-        '  tileMode: $tileMode,\n'
+        '  tileMode: ${tileMode.name},\n'
         ')';
   }
 
@@ -131,7 +131,7 @@ class GradientModel {
         '  radius: 0.5,\n'
         '  colors: ${_colorsCode()},\n'
         '  stops: ${_stopsCode()},\n'
-        '  tileMode: $tileMode,\n'
+        '  tileMode: ${tileMode.name},\n'
         ')';
   }
 

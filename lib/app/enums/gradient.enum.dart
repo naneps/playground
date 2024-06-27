@@ -18,6 +18,19 @@ enum GradientType { linear, radial, sweep }
 // Model to represent the gradient configuration
 enum TileModeType { clamp, mirror, repeat }
 
+extension TileModeTypeExtension on TileModeType {
+  String get name {
+    switch (this) {
+      case TileModeType.clamp:
+        return 'TileMode.clamp';
+      case TileModeType.mirror:
+        return 'TileMode.mirror';
+      case TileModeType.repeat:
+        return 'TileMode.repeated';
+    }
+  }
+}
+
 extension AlignmentTypeExtension on AlignmentType {
   Alignment get alignment {
     switch (this) {
