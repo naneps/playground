@@ -1,48 +1,48 @@
-name: Build and Deploy Flutter Web to GitHub Pages
+# name: Build and Deploy Flutter Web to GitHub Pages
 
-on:
-  push:
-    branches:
-      - main
-  workflow_dispatch:
+# on:
+#   push:
+#     branches:
+#       - main
+#   workflow_dispatch:
 
-permissions:
-  contents: read
-  pages: write
-  id-token: write
+# permissions:
+#   contents: read
+#   pages: write
+#   id-token: write
 
-concurrency:
-  group: "pages"
-  cancel-in-progress: false
+# concurrency:
+#   group: "pages"
+#   cancel-in-progress: false
 
-jobs:
-  build-and-deploy:
-    runs-on: ubuntu-latest
+# jobs:
+#   build-and-deploy:
+#     runs-on: ubuntu-latest
 
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
+#     steps:
+#       - name: Checkout repository
+#         uses: actions/checkout@v4
 
-      - name: Set up Flutter
-        uses: subosito/flutter-action@v2
-        with:
-          flutter-version: '3.19.5'  # Ganti dengan versi Flutter yang sesuai
-          channel: 'stable'  # Pastikan menggunakan channel stable
+#       - name: Set up Flutter
+#         uses: subosito/flutter-action@v2
+#         with:
+#           flutter-version: '3.19.5'  # Ganti dengan versi Flutter yang sesuai
+#           channel: 'stable'  # Pastikan menggunakan channel stable
 
-      - name: Install dependencies
-        run: flutter pub get
+#       - name: Install dependencies
+#         run: flutter pub get
 
-      - name: Build Flutter web
-        run: flutter build web --release
+#       - name: Build Flutter web
+#         run: flutter build web --release
 
-      - name: Upload artifact
-        uses: actions/upload-artifact@v2
-        with:
-          name: web-build
-          path: build/web
+#       - name: Upload artifact
+#         uses: actions/upload-artifact@v2
+#         with:
+#           name: web-build
+#           path: build/web
 
-      - name: Deploy to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          github_token: ${{ secrets.TOKEN }}
-          publish_dir: build/web
+#       - name: Deploy to GitHub Pages
+#         uses: peaceiris/actions-gh-pages@v3
+#         with:
+#           github_token: ${{ secrets.TOKEN }}
+#           publish_dir: build/web
