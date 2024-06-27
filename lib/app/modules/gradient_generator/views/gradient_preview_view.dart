@@ -37,6 +37,10 @@ class GradientPreviewView extends GetView<GradientGeneratorController> {
                       width: 300,
                       height: 300,
                       decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        border: Border.all(
+                          color: Colors.grey.shade300,
+                        ),
                         gradient: controller.gradient.value.toGradient().value,
                       ),
                     );
@@ -45,7 +49,7 @@ class GradientPreviewView extends GetView<GradientGeneratorController> {
               ),
               // code
               Obx(() {
-                return CodePreview(controller.code.value);
+                return CodePreview(controller.gradient.value.toCode());
               })
             ],
           ),

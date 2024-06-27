@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
+import 'package:get/get.dart';
 
 class ColorPickerWidget extends StatefulWidget {
   final List<Color> initialColors;
@@ -21,12 +22,6 @@ class _ColorPickerWidgetState extends State<ColorPickerWidget> {
   late List<Color> colors;
 
   @override
-  void initState() {
-    super.initState();
-    colors = List.from(widget.initialColors);
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.all(10),
@@ -44,19 +39,50 @@ class _ColorPickerWidgetState extends State<ColorPickerWidget> {
           ),
           const SizedBox(height: 10),
           SizedBox(
-              height: 90,
-              child: ReorderableListView.builder(
-                  scrollDirection: Axis.horizontal,
-                  onReorder: _onReorder,
-                  footer: SizedBox(
-                    height: 90,
-                    child: _buildAddButton(),
-                  ),
-                  itemCount: colors.length,
-                  itemBuilder: (context, index) {
-                    return _buildColorItem(index);
-                  })),
+            height: !GetPlatform.isWeb ? 40 : 90,
+            child: ReorderableListView.builder(
+              scrollDirection: Axis.horizontal,
+              onReorder: _onReorder,
+              footer: SizedBox(
+                height: 90,
+                child: _buildAddButton(),
+              ),
+              itemCount: colors.length,
+              itemBuilder: (context, index) {
+                return _buildColorItem(index);
+              },
+            ),
+          ),
         ],
+      ),
+    );
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    colors = List.from(widget.initialColors);
+  }
+
+  void _addColor(Color color) {
+    setState(() {
+      colors.add(color);
+      widget.onColorsChanged(colors);
+    });
+  }
+
+  Widget _buildAddButton() {
+    return Container(
+      key: const ValueKey('add_button'),
+      margin: const EdgeInsets.only(right: 5),
+      padding: const EdgeInsets.all(5),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(5),
+        border: Border.all(color: Colors.grey.shade400),
+      ),
+      child: IconButton(
+        icon: const Icon(Icons.add),
+        onPressed: _showColorPicker,
       ),
     );
   }
@@ -65,7 +91,6 @@ class _ColorPickerWidgetState extends State<ColorPickerWidget> {
     return Container(
       key: ValueKey(colors[index]),
       margin: const EdgeInsets.only(right: 5),
-      padding: const EdgeInsets.all(5),
       decoration: BoxDecoration(
         color: colors[index],
         borderRadius: BorderRadius.circular(5),
@@ -97,25 +122,13 @@ class _ColorPickerWidgetState extends State<ColorPickerWidget> {
     );
   }
 
-  Widget _buildAddButton() {
-    return Container(
-      key: const ValueKey('add_button'),
-      margin: const EdgeInsets.only(right: 5),
-      padding: const EdgeInsets.all(5),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(5),
-        border: Border.all(color: Colors.grey.shade400),
-      ),
-      child: IconButton(
-        icon: const Icon(Icons.add),
-        onPressed: _showColorPicker,
-      ),
-    );
-  }
-
-  void _addColor(Color color) {
+  void _onReorder(int oldIndex, int newIndex) {
     setState(() {
-      colors.add(color);
+      if (newIndex > oldIndex) {
+        newIndex -= 1;
+      }
+      final color = colors.removeAt(oldIndex);
+      colors.insert(newIndex, color);
       widget.onColorsChanged(colors);
     });
   }
@@ -180,16 +193,5 @@ class _ColorPickerWidgetState extends State<ColorPickerWidget> {
         );
       },
     );
-  }
-
-  void _onReorder(int oldIndex, int newIndex) {
-    setState(() {
-      if (newIndex > oldIndex) {
-        newIndex -= 1;
-      }
-      final color = colors.removeAt(oldIndex);
-      colors.insert(newIndex, color);
-      widget.onColorsChanged(colors);
-    });
   }
 }

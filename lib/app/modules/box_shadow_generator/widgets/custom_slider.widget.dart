@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 class CustomSlider extends StatefulWidget {
   final String label;
@@ -9,6 +10,7 @@ class CustomSlider extends StatefulWidget {
   final ValueChanged<double> onChanged;
   final ValueChanged<double>? onMaxChanged;
   final ValueChanged<double>? onMinChanged;
+  final Widget? labelBuilder;
   final bool hasMin;
   final bool canEdit;
   const CustomSlider({
@@ -20,6 +22,7 @@ class CustomSlider extends StatefulWidget {
     required this.onChanged,
     this.onMaxChanged,
     this.onMinChanged,
+    this.labelBuilder,
     this.hasMin = true,
     this.canEdit = true,
   });
@@ -77,21 +80,25 @@ class _CustomSliderState extends State<CustomSlider> {
   Widget _buildLabelWithIcon() {
     return Row(
       children: [
-        Text(
-          widget.label,
-          style: Theme.of(context).textTheme.labelMedium,
-        ),
-        Visibility(
-          visible: widget.canEdit,
-          child: IconButton(
-            icon: Icon(isUpdated ? Icons.arrow_drop_up : Icons.arrow_drop_down),
-            onPressed: () {
-              setState(() {
-                isUpdated = !isUpdated;
-              });
-            },
+        if (widget.labelBuilder != null) ...[
+          widget.labelBuilder!,
+        ] else ...[
+          Text(
+            widget.label,
+            style: Theme.of(context).textTheme.labelMedium,
           ),
-        ),
+          Visibility(
+            visible: widget.canEdit,
+            child: IconButton(
+              icon: Icon(isUpdated ? MdiIcons.check : MdiIcons.pencil),
+              onPressed: () {
+                setState(() {
+                  isUpdated = !isUpdated;
+                });
+              },
+            ),
+          ),
+        ]
       ],
     );
   }
@@ -167,11 +174,10 @@ class _CustomSliderState extends State<CustomSlider> {
   Widget _buildSliderWithValue() {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.center,
-      mainAxisSize: MainAxisSize.max,
-      mainAxisAlignment: MainAxisAlignment.start,
+      mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: [
         Expanded(
-          child: Slider(
+          child: Slider.adaptive(
             thumbColor: Theme.of(context).primaryColor,
             value: sliderValue,
             min: widget.min,
@@ -180,7 +186,7 @@ class _CustomSliderState extends State<CustomSlider> {
               setState(() {
                 sliderValue = value;
               });
-              widget.onChanged(value);
+              widget.onChanged(double.parse(value.toStringAsFixed(2)));
             },
           ),
         ),

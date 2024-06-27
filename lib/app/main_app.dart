@@ -14,6 +14,11 @@ class MainApp extends StatelessWidget {
       theme: ThemeApp(context: context).themeData,
       initialRoute: AppPages.INITIAL,
       getPages: AppPages.routes,
+      scrollBehavior: const MaterialScrollBehavior().copyWith(
+        scrollbars: true,
+        overscroll: true,
+        physics: const BouncingScrollPhysics(),
+      ),
     );
   }
 }

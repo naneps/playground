@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 class ActionChipsSelector<T> extends StatefulWidget {
   final List<T> items;
-  final String Function(T)? titleBuilder;
+  final Widget Function(T)? titleBuilder;
   final String label;
   final ValueChanged<List<T>>
       onChanged; // Always returns a list, even if single selection
@@ -26,7 +28,7 @@ class ActionChipsSelector<T> extends StatefulWidget {
 
 class _ActionChipsSelectorState<T> extends State<ActionChipsSelector<T>> {
   late List<T> selectedValues;
-
+  final ScrollController _scrollController = ScrollController();
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -44,41 +46,76 @@ class _ActionChipsSelectorState<T> extends State<ActionChipsSelector<T>> {
             style: Theme.of(context).textTheme.labelMedium,
           ),
           const SizedBox(height: 10),
-          SingleChildScrollView(
-            scrollDirection: Axis.horizontal,
-            child: Row(
-              children: [
-                ...widget.items.asMap().entries.map((e) {
-                  T item = e.value;
-                  final isSelected = selectedValues.contains(item);
-                  return Container(
-                    margin: const EdgeInsets.only(right: 10),
-                    child: ActionChip(
-                      avatar: isSelected
-                          ? Icon(Icons.check, color: Colors.green.shade500)
-                          : null,
-                      label: Text(
-                          widget.titleBuilder?.call(item) ?? item.toString()),
-                      onPressed: () {
-                        setState(() {
-                          if (widget.multipleSelection) {
-                            if (selectedValues.contains(item)) {
-                              selectedValues.remove(item);
-                            } else {
-                              selectedValues.add(item);
-                            }
-                          } else {
-                            selectedValues = [item];
-                          }
-                          widget.onChanged(selectedValues);
-                        });
-                      },
-                    ),
-                  );
-                }),
+          Row(
+            children: [
+              // icon for scroll left
+              if (GetPlatform.isWeb) ...[
+                IconButton(
+                  icon: Icon(MdiIcons.chevronLeft),
+                  onPressed: () {
+                    _scrollController.animateTo(
+                      _scrollController.offset - 50,
+                      curve: Curves.linear,
+                      duration: const Duration(milliseconds: 500),
+                    );
+                  },
+                ),
               ],
-            ),
-          )
+              Expanded(
+                child: SizedBox(
+                  height: 50,
+                  width: double.infinity,
+                  child: ListView.builder(
+                    controller: _scrollController,
+                    scrollDirection: Axis.horizontal,
+                    itemCount: widget.items.length,
+                    shrinkWrap: true,
+                    physics: const ClampingScrollPhysics(),
+                    itemBuilder: (context, index) {
+                      final item = widget.items[index];
+                      final selected = selectedValues.contains(item);
+                      return Container(
+                        margin: const EdgeInsets.only(right: 10),
+                        child: ActionChip(
+                          label: widget.titleBuilder != null
+                              ? widget.titleBuilder!(item)
+                              : Text(item.toString()),
+                          avatar: selected ? const Icon(Icons.check) : null,
+                          onPressed: () {
+                            setState(() {
+                              if (widget.multipleSelection) {
+                                if (selectedValues.contains(item)) {
+                                  selectedValues.remove(item);
+                                } else {
+                                  selectedValues.add(item);
+                                }
+                              } else {
+                                selectedValues = [item];
+                              }
+                              widget.onChanged(selectedValues);
+                            });
+                          },
+                        ),
+                      );
+                    },
+                  ),
+                ),
+              ),
+              // icon for scroll right
+              if (GetPlatform.isWeb) ...[
+                IconButton(
+                  icon: Icon(MdiIcons.chevronRight),
+                  onPressed: () {
+                    _scrollController.animateTo(
+                      _scrollController.offset + 50,
+                      curve: Curves.linear,
+                      duration: const Duration(milliseconds: 500),
+                    );
+                  },
+                ),
+              ],
+            ],
+          ),
         ],
       ),
     );

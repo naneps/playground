@@ -168,6 +168,12 @@ class ThemeApp {
           fontWeight: FontWeight.w400,
         ),
       ),
+      dividerColor: Colors.grey.shade100,
+      dividerTheme: DividerThemeData(
+        thickness: 2,
+        space: 5,
+        color: Colors.grey.shade200,
+      ),
       bottomNavigationBarTheme: BottomNavigationBarThemeData(
         backgroundColor: Colors.white,
         selectedItemColor: primaryColor,

@@ -9,4 +9,11 @@ class BoxDecorationModel {
     this.boxShadow,
     this.gradient,
   });
+
+  BoxDecoration toBoxDecoration() {
+    return BoxDecoration(
+      boxShadow: boxShadow,
+      gradient: gradient?.toGradient().value,
+    );
+  }
 }

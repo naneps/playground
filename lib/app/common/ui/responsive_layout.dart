@@ -26,15 +26,25 @@ class ResponsiveLayout extends StatelessWidget {
               constraints.maxWidth >= 641 && constraints.maxWidth < 1025;
           var isDesktop = constraints.maxWidth >= 1025;
 
+          Widget currentChild;
           if (isMobile && orientation == Orientation.landscape) {
-            return tablet ?? mobile ?? Container();
+            currentChild = tablet ?? mobile ?? Container();
           } else if (isDesktop) {
-            return desktop ?? tablet ?? mobile ?? Container();
+            currentChild = desktop ?? tablet ?? mobile ?? Container();
           } else if (isTablet) {
-            return tablet ?? mobile ?? Container();
+            currentChild = tablet ?? mobile ?? Container();
           } else {
-            return mobile ?? Container();
+            currentChild = mobile ?? Container();
           }
+
+          return AnimatedSwitcher(
+            duration: const Duration(milliseconds: 300),
+            transitionBuilder: (child, animation) {
+              return FadeTransition(opacity: animation, child: child);
+            },
+            switchInCurve: Curves.easeInOutCubic,
+            child: currentChild,
+          );
         },
       ),
     );
