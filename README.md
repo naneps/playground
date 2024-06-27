@@ -1,6 +1,3 @@
-Here's an updated version of the documentation for your "playground" project:
-
----
 
 ### Project Documentation: playground
 
