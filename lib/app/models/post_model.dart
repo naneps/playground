@@ -1,41 +1,55 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:playground/app/models/user.model.dart';
+
 class PostModel {
   String? id;
-  String? authorId;
   String? content;
-  DateTime? timestamp;
-  List<String>? tags;
+  String? imageUrl;
+  UserModel? author;
+  List<String>? hashtags;
+  int? views;
+  int? comments;
   int? likes;
-  int? commentsCount;
+  DateTime? createdAt;
 
   PostModel({
     this.id,
-    this.authorId,
     this.content,
-    this.timestamp,
-    this.tags,
-    this.likes = 0,
-    this.commentsCount = 0,
+    this.imageUrl,
+    this.author,
+    this.hashtags,
+    this.views,
+    this.comments,
+    this.likes,
+    this.createdAt,
   });
 
   PostModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];
-    authorId = json['authorId'];
     content = json['content'];
-    timestamp = DateTime.parse(json['timestamp']);
-    tags = List<String>.from(json['tags']);
-    likes = json['likes'] ?? 0;
-    commentsCount = json['commentsCount'] ?? 0;
+    imageUrl = json['imageUrl'];
+    author = json['author'] != null ? UserModel.fromJson(json['author']) : null;
+    hashtags =
+        json['hashtags'] != null ? List<String>.from(json['hashtags']) : [];
+    views = json['views'];
+    comments = json['comments'];
+    likes = json['likes'];
+    createdAt = (json['createdAt'] as Timestamp).toDate();
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
+    final Map<String, dynamic> data = {};
     data['id'] = id;
-    data['authorId'] = authorId;
     data['content'] = content;
-    data['timestamp'] = timestamp!.toIso8601String();
-    data['tags'] = tags;
+    data['imageUrl'] = imageUrl;
+    if (author != null) {
+      data['author'] = author!.toJson();
+    }
+    data['hashtags'] = hashtags;
+    data['views'] = views;
+    data['comments'] = comments;
     data['likes'] = likes;
-    data['commentsCount'] = commentsCount;
+    data['createdAt'] = createdAt;
     return data;
   }
 }

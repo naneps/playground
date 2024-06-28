@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:playground/app/common/theme.dart';
+import 'package:playground/app/models/post_model.dart';
 
 class PostWidget extends StatelessWidget {
-  const PostWidget({super.key});
+  final PostModel post;
+
+  const PostWidget({super.key, required this.post});
 
   @override
   Widget build(BuildContext context) {
@@ -16,13 +20,23 @@ class PostWidget extends StatelessWidget {
           color: Colors.grey.shade300,
           width: 0.5,
         ),
-        boxShadow: const [],
+        boxShadow: const [
+          BoxShadow(
+            color: Color(0x1b141414),
+            blurRadius: 87.74,
+            spreadRadius: 0,
+            offset: Offset(6.23, 9.73),
+            blurStyle: BlurStyle.inner,
+          ),
+        ],
       ),
       child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.start,
         children: [
           Container(
-            width: 100,
-            height: 100,
+            width: 200,
+            height: 200,
             decoration: BoxDecoration(
               color: Colors.grey.shade300,
               borderRadius: BorderRadius.circular(10),
@@ -30,12 +44,19 @@ class PostWidget extends StatelessWidget {
                 color: Colors.grey.shade300,
                 width: 0.5,
               ),
-              image: const DecorationImage(
-                image: NetworkImage(
-                  'https://images.unsplash.com/photo-1719216324207-3b9727413913?q=80&w=1887&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-                ),
+              image: DecorationImage(
+                image: NetworkImage(post.imageUrl ?? ''),
                 fit: BoxFit.cover,
               ),
+              boxShadow: const [
+                BoxShadow(
+                  color: Color(0x1b141414),
+                  blurRadius: 87.74,
+                  spreadRadius: 0,
+                  offset: Offset(6.23, 9.73),
+                  blurStyle: BlurStyle.inner,
+                ),
+              ],
             ),
           ),
           const SizedBox(width: 10),
@@ -43,39 +64,91 @@ class PostWidget extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
               children: [
                 Text(
-                  "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-                  style: Theme.of(context).textTheme.headlineMedium,
+                  post.content ?? '',
+                  style: Theme.of(context).textTheme.headlineSmall,
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
                 ),
-                ListTile(
-                  contentPadding: EdgeInsets.zero,
-                  leading: CircleAvatar(
-                    radius: 22,
-                    backgroundColor: ThemeApp().primaryColor,
-                    child: const CircleAvatar(
-                      radius: 20,
-                      backgroundImage: NetworkImage(
-                        'https://randomuser.me/api/portraits/lego/1.jpg',
+                const SizedBox(height: 10),
+                SizedBox(
+                  height: 30,
+                  child: Wrap(
+                    clipBehavior: Clip.antiAliasWithSaveLayer,
+                    spacing: 5,
+                    runSpacing: 2,
+                    children: post.hashtags?.map((hashtag) {
+                          return Chip(
+                            label: Text(
+                              '#$hashtag',
+                              style: Theme.of(context).textTheme.bodyMedium,
+                            ),
+                          );
+                        }).toList() ??
+                        [],
+                  ),
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Expanded(
+                      child: ListTile(
+                        contentPadding: EdgeInsets.zero,
+                        leading: CircleAvatar(
+                          radius: 20,
+                          backgroundColor: ThemeApp().primaryColor,
+                          child: CircleAvatar(
+                            radius: 18,
+                            backgroundImage:
+                                NetworkImage(post.author?.avatar ?? ''),
+                          ),
+                        ),
+                        visualDensity: VisualDensity.comfortable,
+                        title: Text(
+                          post.author?.name ?? '',
+                          style: Theme.of(context).textTheme.labelMedium,
+                        ),
+                        dense: true,
+                        subtitle: Text(
+                          '${post.createdAt?.difference(DateTime.now()).inHours} hours ago',
+                          style: Theme.of(context).textTheme.bodyMedium,
+                        ),
                       ),
                     ),
-                  ),
-                  visualDensity: VisualDensity.comfortable,
-                  title: Text(
-                    'John Doe',
-                    style: Theme.of(context).textTheme.labelMedium,
-                  ),
-                  dense: true,
-                  subtitle: Text(
-                    '2 hours ago',
-                    style: Theme.of(context).textTheme.bodyMedium,
-                  ),
-                ), // CircleAvatar
-                Container(),
+                    Expanded(
+                      flex: 2,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Text(
+                            '${post.views} Views',
+                            style: Theme.of(context).textTheme.bodyMedium,
+                          ),
+                          const SizedBox(width: 10),
+                          Text(
+                            '${post.comments} Comments',
+                            style: Theme.of(context).textTheme.bodyMedium,
+                          ),
+                          const SizedBox(width: 10),
+                          Text(
+                            '${post.likes} Likes',
+                            style: Theme.of(context).textTheme.bodyMedium,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
               ],
             ),
+          ),
+          IconButton(
+            icon: Icon(MdiIcons.heartOutline),
+            onPressed: () {},
           ),
         ],
       ),

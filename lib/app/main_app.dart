@@ -16,7 +16,7 @@ class MainApp extends StatelessWidget {
       initialRoute: AppPages.INITIAL,
       getPages: AppPages.routes,
       scrollBehavior: const MaterialScrollBehavior().copyWith(
-        scrollbars: true,
+        scrollbars: false,
         overscroll: true,
         physics: const BouncingScrollPhysics(),
       ),

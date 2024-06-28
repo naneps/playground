@@ -76,15 +76,17 @@ class ForumView extends GetView<ForumController> {
                   ),
                   Expanded(
                       child: ListView.separated(
-                    clipBehavior: Clip.none,
+                    shrinkWrap: true,
                     padding: const EdgeInsets.symmetric(
-                      vertical: 10,
+                      vertical: 15,
                     ),
-                    itemCount: 10,
+                    itemCount: controller.dummyPosts.length,
                     separatorBuilder: (context, index) =>
                         const SizedBox(height: 10),
                     itemBuilder: (context, index) {
-                      return const PostWidget();
+                      return PostWidget(
+                        post: controller.dummyPosts[index],
+                      );
                     },
                   ))
                 ],
