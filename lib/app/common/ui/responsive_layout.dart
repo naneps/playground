@@ -20,21 +20,20 @@ class ResponsiveLayout extends StatelessWidget {
       padding: padding ?? EdgeInsets.zero,
       child: LayoutBuilder(
         builder: (context, constraints) {
-          var orientation = MediaQuery.of(context).orientation;
-          var isMobile = constraints.maxWidth < 641;
+          var isMobile = constraints.maxWidth <= 480;
           var isTablet =
-              constraints.maxWidth >= 641 && constraints.maxWidth < 1025;
-          var isDesktop = constraints.maxWidth >= 1025;
+              constraints.maxWidth > 480 && constraints.maxWidth <= 1024;
+          var isDesktop = constraints.maxWidth > 1024;
 
           Widget currentChild;
-          if (isMobile && orientation == Orientation.landscape) {
+          if (isMobile) {
+            currentChild = mobile ?? Container();
+          } else if (isTablet) {
             currentChild = tablet ?? mobile ?? Container();
           } else if (isDesktop) {
             currentChild = desktop ?? tablet ?? mobile ?? Container();
-          } else if (isTablet) {
-            currentChild = tablet ?? mobile ?? Container();
           } else {
-            currentChild = mobile ?? Container();
+            currentChild = Container(); // Fallback, though unlikely to reach
           }
 
           return AnimatedSwitcher(

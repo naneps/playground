@@ -1,30 +1,48 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:playground/app/modules/auth/controllers/auth_controller.dart';
+import 'package:playground/app/services/user_service_information.dart';
 
 class ForumController extends GetxController {
-  final FirebaseAuth _auth = FirebaseAuth.instance;
+  final AuthController _authController = Get.put(AuthController());
+  final userService = Get.find<UserService>();
+  final textController = TextEditingController();
+  FocusNode focusNode = FocusNode();
+  Rx<User?> user = Rx<User?>(null);
+  @override
+  void onInit() {
+    // TODO: implement onInit
+    super.onInit();
+    FirebaseAuth.instance.authStateChanges().listen((User? user) {
+      this.user.value = user;
+    });
+    setupTypingListeners(userService);
+  }
 
-  Future<void> signInWithGithub() async {
-    try {
-      final result = await _auth.signInWithPopup(GithubAuthProvider());
+  void setupTypingListeners(UserService userService) {
+    textController.addListener(() {
+      _updateTypingStatus(userService);
+    });
 
-      if (result.user != null) {
-        Get.snackbar('Success', 'Logged in successfully');
-        final idToken = await _auth.currentUser!.getIdToken();
-        final idTokenResult = await _auth.currentUser!.getIdTokenResult();
+    focusNode.addListener(() {
+      _updateTypingStatus(userService);
+    });
+  }
 
-        print('ID Token: $idToken');
-        print('ID Token Result: $idTokenResult');
-        // login with credentials
-        final credential = GithubAuthProvider.credential(idToken!);
-        final userCredential = await _auth.signInWithCredential(credential);
-        print('User Credential: $userCredential');
-      } else {
-        Get.snackbar('Error', 'Failed to login');
-      }
-    } catch (e) {
-      Get.snackbar('Error', 'Failed to login: $e');
-      print('Error during GitHub sign-in: $e');
-    }
+  Future<void> signInWithGitHub() async {
+    await _authController.signInWithGitHub();
+
+    user.value = FirebaseAuth.instance.currentUser;
+  }
+
+  Future<void> signOut() async {
+    await userService.setUserOnlineStatus(false);
+    await _authController.signOut();
+  }
+
+  void _updateTypingStatus(UserService userService) {
+    bool isTyping = textController.text.isNotEmpty && focusNode.hasFocus;
+    userService.setUserIsTyping(isTyping, 'forum');
   }
 }

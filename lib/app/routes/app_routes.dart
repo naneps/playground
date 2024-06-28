@@ -11,6 +11,9 @@ abstract class Routes {
   static const TOOLS = _Paths.TOOLS;
   static const ANIMATIONS = _Paths.ANIMATIONS;
   static const UI_COMPONENTS = _Paths.UI_COMPONENTS;
+  static const PROFILE = _Paths.PROFILE;
+  static const AUTH = _Paths.AUTH;
+  static const POST = _Paths.POST;
 }
 
 abstract class _Paths {
@@ -23,4 +26,7 @@ abstract class _Paths {
   static const TOOLS = '/tools';
   static const ANIMATIONS = '/animations';
   static const UI_COMPONENTS = '/ui-components';
+  static const PROFILE = '/profile';
+  static const AUTH = '/auth';
+  static const POST = '/post';
 }

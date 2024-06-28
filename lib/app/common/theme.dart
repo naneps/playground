@@ -15,7 +15,7 @@ class ThemeApp {
   Color warningColor = const Color.fromARGB(255, 255, 193, 100);
   Color shadowColor = Colors.grey[300]!;
   Color borderColor = Colors.grey[300]!;
-  Color scaffoldBackgroundColor = Colors.white;
+  Color scaffoldBackgroundColor = const Color.fromARGB(255, 247, 246, 255);
   Color appBarBackgroundColor = Colors.white;
 
   BuildContext? context;

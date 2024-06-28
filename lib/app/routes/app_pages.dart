@@ -2,6 +2,8 @@ import 'package:get/get.dart';
 
 import '../modules/animations/bindings/animations_binding.dart';
 import '../modules/animations/views/animations_view.dart';
+import '../modules/auth/bindings/auth_binding.dart';
+import '../modules/auth/views/auth_view.dart';
 import '../modules/box_shadow_generator/bindings/box_shadow_generator_binding.dart';
 import '../modules/box_shadow_generator/views/box_shadow_generator_view.dart';
 import '../modules/core/bindings/core_binding.dart';
@@ -12,6 +14,10 @@ import '../modules/gradient_generator/bindings/gradient_generator_binding.dart';
 import '../modules/gradient_generator/views/gradient_generator_view.dart';
 import '../modules/home/bindings/home_binding.dart';
 import '../modules/home/views/home_view.dart';
+import '../modules/post/bindings/post_binding.dart';
+import '../modules/post/views/post_view.dart';
+import '../modules/profile/bindings/profile_binding.dart';
+import '../modules/profile/views/profile_view.dart';
 import '../modules/tools/bindings/tools_binding.dart';
 import '../modules/tools/views/tools_view.dart';
 import '../modules/ui_components/bindings/ui_components_binding.dart';
@@ -34,6 +40,7 @@ class AppPages {
         binding: CoreBinding(),
         bindings: [
           CoreBinding(),
+          AuthBinding(),
           BoxShadowGeneratorBinding(),
           GradientGeneratorBinding(),
           ForumBinding(),
@@ -70,6 +77,21 @@ class AppPages {
       name: _Paths.UI_COMPONENTS,
       page: () => const UiComponentsView(),
       binding: UiComponentsBinding(),
+    ),
+    GetPage(
+      name: _Paths.PROFILE,
+      page: () => const ProfileView(),
+      binding: ProfileBinding(),
+    ),
+    GetPage(
+      name: _Paths.AUTH,
+      page: () => const AuthView(),
+      binding: AuthBinding(),
+    ),
+    GetPage(
+      name: _Paths.POST,
+      page: () => const PostView(),
+      binding: PostBinding(),
     ),
   ];
 

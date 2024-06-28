@@ -1,37 +1,60 @@
+// forum_view.dart
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
-
-import '../controllers/forum_controller.dart';
+import 'package:playground/app/common/ui/responsive_layout.dart';
+import 'package:playground/app/modules/forum/controllers/forum_controller.dart';
 
 class ForumView extends GetView<ForumController> {
   const ForumView({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('ForumView'),
-        centerTitle: true,
+        body: ResponsiveLayout(
+      mobile: const Column(),
+      tablet: Row(
+        children: [
+          Expanded(
+            child: Container(
+              color: Colors.amber,
+            ),
+          ),
+          Expanded(
+            flex: 2,
+            child: Container(
+              color: Colors.blue,
+            ),
+          ),
+          Expanded(
+            child: Container(
+              color: const Color.fromARGB(255, 104, 255, 109),
+            ),
+          )
+        ],
       ),
-      body: Center(
-          child: ElevatedButton(
-        style: ElevatedButton.styleFrom(
-          foregroundColor: Colors.white,
-          backgroundColor: Colors.black,
-          fixedSize: const Size(200, 50),
-        ),
-        onPressed: () {
-          controller.signInWithGithub();
-        },
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            // login with github
-            const Text('Login with Github'),
-            Icon(MdiIcons.github)
-          ],
-        ),
-      )),
-    );
+      desktop: Row(
+        children: [
+          Expanded(
+            flex: 2,
+            child: Container(
+              color: Colors.amber,
+            ),
+          ),
+          Expanded(
+            flex: 4,
+            child: Container(
+              color: Colors.blue,
+            ),
+          ),
+          Expanded(
+            flex: 2,
+            child: Container(
+              color: Colors.green,
+            ),
+          )
+        ],
+      ),
+    ));
   }
 }

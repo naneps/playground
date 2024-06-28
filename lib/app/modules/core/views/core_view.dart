@@ -75,16 +75,22 @@ class CoreView extends GetView<CoreController> {
                       )),
                   onTap: () {},
                 ),
-                ListTile(
-                  dense: true,
-                  visualDensity: VisualDensity.compact,
-                  leading: Icon(MdiIcons.logout, color: ThemeApp().dangerColor),
-                  title: Text('Logout',
-                      style: Get.textTheme.labelMedium!.copyWith(
-                        color: ThemeApp().dangerColor,
-                      )),
-                  onTap: () {},
-                ),
+                Obx(() {
+                  return Visibility(
+                    visible: controller.isLogin.value,
+                    child: ListTile(
+                      dense: true,
+                      visualDensity: VisualDensity.compact,
+                      leading:
+                          Icon(MdiIcons.logout, color: ThemeApp().dangerColor),
+                      title: Text('Logout',
+                          style: Get.textTheme.labelMedium!.copyWith(
+                            color: ThemeApp().dangerColor,
+                          )),
+                      onTap: () {},
+                    ),
+                  );
+                }),
               ],
             ),
           ),

@@ -2,10 +2,10 @@ name: playground
 version: 0.1.0
 publish_to: none
 description: A new Flutter project.
-environment:
-  sdk: ">=3.3.3 <4.0.0"
+environment: 
+  sdk: '>=3.3.3 <4.0.0'
 
-dependencies:
+dependencies: 
   sidebarx: ^0.17.1
   flutter_colorpicker: ^1.1.0
   get: 4.6.6
@@ -16,15 +16,21 @@ dependencies:
   firebase_auth: 5.1.1
   image_picker: ^1.1.2
   flutter_zoom_drawer: ^3.2.0
-  github_sign_in: ^0.0.5-dev.4
   intl: ^0.19.0
-  flutter:
+  webview_flutter: 4.8.0
+  flutter: 
     sdk: flutter
+  cloud_firestore: ^5.0.2
+  flutter_dotenv: ^5.1.0
 
-dev_dependencies:
+dev_dependencies: 
   flutter_lints: ^3.0.0
-  flutter_test:
+  flutter_test: 
     sdk: flutter
 
-flutter:
+flutter: 
+  assets: 
+    - assets/
+    - assets/.env
   uses-material-design: true
+
