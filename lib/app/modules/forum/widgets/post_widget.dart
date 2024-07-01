@@ -11,7 +11,6 @@ class PostWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 450,
       padding: const EdgeInsets.all(10),
       decoration: BoxDecoration(
         color: Colors.white,
@@ -35,8 +34,6 @@ class PostWidget extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
           Container(
-            width: 200,
-            height: 200,
             decoration: BoxDecoration(
               color: Colors.grey.shade300,
               borderRadius: BorderRadius.circular(10),
@@ -66,15 +63,28 @@ class PostWidget extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisSize: MainAxisSize.min,
               children: [
-                Text(
-                  post.content ?? '',
-                  style: Theme.of(context).textTheme.headlineSmall,
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Expanded(
+                      child: Text(
+                        post.content ?? '',
+                        style: Theme.of(context).textTheme.headlineSmall,
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                    const SizedBox(width: 10),
+                    IconButton(
+                        onPressed: () {},
+                        icon: Icon(
+                          MdiIcons.heartOutline,
+                        ))
+                  ],
                 ),
-                const SizedBox(height: 10),
                 SizedBox(
-                  height: 30,
+                  height: 50,
                   child: Wrap(
                     clipBehavior: Clip.antiAliasWithSaveLayer,
                     spacing: 5,
@@ -83,7 +93,7 @@ class PostWidget extends StatelessWidget {
                           return Chip(
                             label: Text(
                               '#$hashtag',
-                              style: Theme.of(context).textTheme.bodyMedium,
+                              style: Theme.of(context).textTheme.bodySmall,
                             ),
                           );
                         }).toList() ??
@@ -91,10 +101,11 @@ class PostWidget extends StatelessWidget {
                   ),
                 ),
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Expanded(
+                      flex: 2,
                       child: ListTile(
                         contentPadding: EdgeInsets.zero,
                         leading: CircleAvatar(
@@ -121,22 +132,22 @@ class PostWidget extends StatelessWidget {
                     Expanded(
                       flex: 2,
                       child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           Text(
                             '${post.views} Views',
-                            style: Theme.of(context).textTheme.bodyMedium,
+                            style: Theme.of(context).textTheme.bodySmall,
                           ),
                           const SizedBox(width: 10),
                           Text(
                             '${post.comments} Comments',
-                            style: Theme.of(context).textTheme.bodyMedium,
+                            style: Theme.of(context).textTheme.bodySmall,
                           ),
                           const SizedBox(width: 10),
                           Text(
                             '${post.likes} Likes',
-                            style: Theme.of(context).textTheme.bodyMedium,
+                            style: Theme.of(context).textTheme.bodySmall,
                           ),
                         ],
                       ),
@@ -145,10 +156,6 @@ class PostWidget extends StatelessWidget {
                 ),
               ],
             ),
-          ),
-          IconButton(
-            icon: Icon(MdiIcons.heartOutline),
-            onPressed: () {},
           ),
         ],
       ),

@@ -39,7 +39,10 @@ class ResponsiveLayout extends StatelessWidget {
           return AnimatedSwitcher(
             duration: const Duration(milliseconds: 300),
             transitionBuilder: (child, animation) {
-              return FadeTransition(opacity: animation, child: child);
+              return FadeTransition(
+                opacity: animation,
+                child: child,
+              );
             },
             switchInCurve: Curves.easeInOutCubic,
             child: currentChild,

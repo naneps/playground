@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
-
 import 'package:get/get.dart';
 
 import '../controllers/post_controller.dart';
 
 class PostView extends GetView<PostController> {
-  const PostView({Key? key}) : super(key: key);
+  const PostView({super.key});
   @override
   Widget build(BuildContext context) {
     return Scaffold(

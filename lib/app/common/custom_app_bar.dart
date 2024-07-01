@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:playground/app/common/theme.dart';
+import 'package:playground/app/modules/core/controllers/core_controller.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class CustomAppBar extends StatelessWidget {
@@ -14,13 +16,8 @@ class CustomAppBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
       decoration: BoxDecoration(
         color: Colors.white,
-        border: Border.all(
-          color: Colors.grey,
-          width: 0.5,
-        ),
         borderRadius: BorderRadius.circular(10),
         boxShadow: const [],
       ),
@@ -54,18 +51,15 @@ class CustomAppBar extends StatelessWidget {
             ],
           ),
         ),
-        leading: IconButton.outlined(
+        leading: IconButton(
           icon: const Icon(Icons.menu),
           onPressed: () {
             if (onLeadingTap != null) {
               onLeadingTap!();
             }
+            Get.find<CoreController>().zoomController.toggle!();
           },
           style: OutlinedButton.styleFrom(
-            side: const BorderSide(
-              color: Colors.grey,
-              width: 0.5,
-            ),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(10),
             ),

@@ -166,11 +166,11 @@ class ThemeApp {
       ),
       iconButtonTheme: IconButtonThemeData(
         style: ButtonStyle(
-          backgroundColor: WidgetStateProperty.all(Colors.transparent),
-          foregroundColor: WidgetStateProperty.all(primaryColor),
-          padding: WidgetStateProperty.all(const EdgeInsets.all(10)),
-          minimumSize: WidgetStateProperty.all(const Size(10, 10)),
-          shape: WidgetStateProperty.all(
+          backgroundColor: MaterialStateProperty.all(Colors.transparent),
+          foregroundColor: MaterialStateProperty.all(primaryColor),
+          padding: MaterialStateProperty.all(const EdgeInsets.all(10)),
+          minimumSize: MaterialStateProperty.all(const Size(10, 10)),
+          shape: MaterialStateProperty.all(
             RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(5),
             ),
@@ -216,14 +216,14 @@ class ThemeApp {
       ),
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ButtonStyle(
-          backgroundColor: WidgetStateProperty.all(primaryColor),
-          foregroundColor: WidgetStateProperty.all(Colors.white),
-          fixedSize: WidgetStateProperty.all(
+          backgroundColor: MaterialStateProperty.all(primaryColor),
+          foregroundColor: MaterialStateProperty.all(Colors.white),
+          fixedSize: MaterialStateProperty.all(
               Size(MediaQuery.of(context!).size.width, 40)),
-          minimumSize: WidgetStateProperty.all(const Size(10, 10)),
-          padding: WidgetStateProperty.all(const EdgeInsets.all(10)),
-          elevation: WidgetStateProperty.all(0),
-          shape: WidgetStateProperty.all(
+          minimumSize: MaterialStateProperty.all(const Size(10, 10)),
+          padding: MaterialStateProperty.all(const EdgeInsets.all(5)),
+          elevation: MaterialStateProperty.all(0),
+          shape: MaterialStateProperty.all(
             RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(5),
               side: BorderSide(color: primaryColor, width: 0),
@@ -249,8 +249,8 @@ class ThemeApp {
       dropdownMenuTheme: DropdownMenuThemeData(
           inputDecorationTheme: const InputDecorationTheme(),
           menuStyle: MenuStyle(
-            backgroundColor: WidgetStateProperty.all(Colors.white),
-            shape: WidgetStateProperty.all(
+            backgroundColor: MaterialStateProperty.all(Colors.white),
+            shape: MaterialStateProperty.all(
               RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(5),
               ),
@@ -266,6 +266,8 @@ class ThemeApp {
         primary: primaryColor,
         secondary: secondaryColor,
         surface: Colors.white,
+        background: backgroundColor,
+        onBackground: textColor,
       ),
     );
   }

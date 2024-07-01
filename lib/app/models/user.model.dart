@@ -55,4 +55,19 @@ class UserModel {
     data['typingStatus'] = typingStatus;
     return data;
   }
+
+  toSignInJson() {
+    final Map<String, dynamic> data = {};
+    data['email'] = email;
+    data['password'] = password;
+    return data;
+  }
+
+  toSignUpJson() {
+    final Map<String, dynamic> data = {};
+    data['name'] = name;
+    data['email'] = email;
+    data['password'] = password;
+    return data;
+  }
 }
