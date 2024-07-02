@@ -1,3 +1,5 @@
+enum Gender { female, male }
+
 class UserModel {
   String? uid;
   String? name;
@@ -7,8 +9,11 @@ class UserModel {
   String? password;
   DateTime? birthday;
   String? role;
+
   String? about;
   bool? online;
+  DateTime? emailVerifiedAt;
+  DateTime? lastOnline;
   Map<String, bool>?
       typingStatus; // Map untuk menyimpan status typing per chat room
 
@@ -24,6 +29,8 @@ class UserModel {
     this.about,
     this.online,
     this.typingStatus,
+    this.emailVerifiedAt,
+    this.lastOnline,
   });
 
   UserModel.fromJson(Map<String, dynamic> json) {
@@ -37,6 +44,8 @@ class UserModel {
     role = json['role'];
     about = json['about'];
     online = json['online'];
+    emailVerifiedAt = json['emailVerifiedAt']?.toDate();
+    lastOnline = json['lastOnline']?.toDate();
     typingStatus = json['typingStatus'] != null
         ? Map<String, bool>.from(json['typingStatus'])
         : {}; // Konversi ke Map jika ada data
@@ -53,6 +62,19 @@ class UserModel {
     data['about'] = about;
     data['online'] = online;
     data['typingStatus'] = typingStatus;
+    data['emailVerifiedAt'] = emailVerifiedAt;
+    data['lastOnline'] = lastOnline;
+
+    return data;
+  }
+
+//   to post
+
+  toPostJson() {
+    final Map<String, dynamic> data = {};
+    data['uid'] = uid;
+    data['name'] = name;
+    data['avatar'] = avatar;
     return data;
   }
 
@@ -70,4 +92,8 @@ class UserModel {
     data['password'] = password;
     return data;
   }
+}
+
+extension GenderExtension on Gender {
+//  make name
 }

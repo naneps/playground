@@ -8,6 +8,8 @@ class UserService extends GetxService {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   Rx<UserModel?> user = Rx<UserModel?>(null);
 
+  String get uid => _auth.currentUser!.uid;
+
   Future<void> createUserInFirestore(User firebaseUser) async {
     try {
       final userDoc = _firestore.collection('users').doc(firebaseUser.uid);
@@ -34,6 +36,18 @@ class UserService extends GetxService {
     }
   }
 
+  Future<bool> isEmailVerified() async {
+    final user = _auth.currentUser;
+    await user!.reload();
+    return user.emailVerified;
+  }
+
+  @override
+  void onClose() {
+    setUserOnlineStatus(false);
+    super.onClose();
+  }
+
   @override
   void onInit() {
     super.onInit();
@@ -50,10 +64,7 @@ class UserService extends GetxService {
   }
 
   Future<void> setUserOnlineStatus(bool isOnline) async {
-    if (user.value != null && user.value!.online != isOnline) {
-      user.value!.online = isOnline;
-      updateUserFieldInFirestore('online', isOnline);
-    }
+    updateUserFieldInFirestore('online', isOnline);
   }
 
   Future<void> updateUserFieldInFirestore(String field, dynamic value) async {

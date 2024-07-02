@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:playground/app/models/user.model.dart';
+import 'package:playground/app/modules/auth/widgets/email_verifictaion.widget.dart';
 import 'package:playground/app/services/auth_service.dart';
 
 class AuthController extends GetxController
@@ -23,9 +24,13 @@ class AuthController extends GetxController
 
   Future<void> loginWithEmailAndPassword() async {
     isLoading.value = true;
-    await _authService.loginWithEmailAndPassword(
+    await _authService.signInWithEmailAndPassword(
       user.email ?? '',
       user.password ?? '',
+      onFail: () {},
+      onSuccess: () {
+        isLoading.value = false;
+      },
     );
     isLoading.value = false;
   }
@@ -43,6 +48,30 @@ class AuthController extends GetxController
       user.email ?? '',
       user.password ?? '',
       user.name ?? '',
+      onFail: () {},
+      onSuccess: () {
+        Navigator.of(Get.overlayContext!).pop();
+        Get.dialog(AlertDialog(
+          contentPadding: const EdgeInsets.all(0),
+          backgroundColor: Colors.transparent,
+          content: EmailVerificationWidget(
+            email: user.email ?? '',
+          ),
+        ));
+      },
+    );
+    print('registerWithEmailAndPassword');
+    print(user.email);
+    print(user.password);
+    print(user.name);
+  }
+
+  Future<void> sendPasswordResetEmail() async {}
+
+  Future<void> signInWithEmailAndPassword() async {
+    await _authService.signInWithEmailAndPassword(
+      user.email ?? '',
+      user.password ?? '',
     );
   }
 

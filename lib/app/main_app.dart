@@ -25,6 +25,7 @@ class MainApp extends StatelessWidget {
         Get.find<UserService>().setUserOnlineStatus(true);
       },
       onDispose: () {
+        print('onDispose');
         Get.find<UserService>().setUserOnlineStatus(false);
       },
     );

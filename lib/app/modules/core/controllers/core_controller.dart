@@ -3,6 +3,7 @@ import 'package:flutter_zoom_drawer/flutter_zoom_drawer.dart';
 import 'package:get/get.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:playground/app/models/navigation.model.dart';
+import 'package:playground/app/models/user.model.dart';
 import 'package:playground/app/routes/app_pages.dart';
 import 'package:playground/app/services/user_service_information.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -13,6 +14,7 @@ class CoreController extends GetxController {
   final userService = Get.find<UserService>();
   RxBool isLogin = false.obs;
   Rx<User?> user = Rx<User?>(null);
+  Rx<UserModel?> userModel = Rx<UserModel?>(null);
   ZoomDrawerController zoomController = ZoomDrawerController();
   RxInt currentIndex = 0.obs;
   RxList<NavigationModel> navigations = <NavigationModel>[
@@ -70,8 +72,6 @@ class CoreController extends GetxController {
     // TODO: implement onInit
     super.onInit();
     _auth.authStateChanges().listen((User? user) {
-      print("Auth Changes");
-      print('User: $user');
       if (user != null) {
         isLogin.value = true;
         userService.setUserOnlineStatus(true);

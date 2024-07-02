@@ -3,8 +3,11 @@ import 'package:flutter_zoom_drawer/flutter_zoom_drawer.dart';
 import 'package:get/get.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:playground/app/common/theme.dart';
+import 'package:playground/app/common/ui/avatar_widget.dart';
 import 'package:playground/app/common/ui/navigation_tile.dart';
 import 'package:playground/app/modules/animations/views/animations_view.dart';
+import 'package:playground/app/modules/auth/controllers/auth_controller.dart';
+import 'package:playground/app/modules/auth/views/auth_view.dart';
 import 'package:playground/app/modules/forum/views/forum_view.dart';
 import 'package:playground/app/modules/home/views/home_view.dart';
 import 'package:playground/app/modules/tools/views/tools_view.dart';
@@ -38,6 +41,55 @@ class CoreView extends GetView<CoreController> {
             child: SingleChildScrollView(
               child: Column(
                 children: [
+                  //   profile user
+                  Obx(() {
+                    return controller.user.value == null
+                        ? ElevatedButton(
+                            onPressed: () {
+                              controller.zoomController.toggle!();
+                              Get.dialog(const AuthView());
+                            },
+                            child: const Text('Sign In'),
+                          )
+                        : Container(
+                            decoration: BoxDecoration(
+                                color: ThemeApp().primaryColor,
+                                borderRadius: BorderRadius.circular(10),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.grey.shade300,
+                                    blurRadius: 13,
+                                    spreadRadius: 5,
+                                    offset: const Offset(3.2, 6.6),
+                                  )
+                                ]),
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 5,
+                              vertical: 0,
+                            ),
+                            child: ListTile(
+                              dense: true,
+                              visualDensity: const VisualDensity(
+                                horizontal: -4,
+                                vertical: -4,
+                              ),
+                              horizontalTitleGap: 10,
+                              contentPadding: EdgeInsets.zero,
+                              leading: AvatarWidget(
+                                imageUrl: controller.user.value?.photoURL ?? '',
+                              ),
+                              title:
+                                  Text(controller.user.value?.displayName ?? '',
+                                      style: Get.textTheme.labelSmall!.copyWith(
+                                        color: Colors.white,
+                                      )),
+                              subtitle: Text(controller.user.value!.email!,
+                                  style: Get.textTheme.bodySmall!.copyWith(
+                                    color: Colors.white,
+                                  )),
+                            ));
+                  }),
+                  const SizedBox(height: 20),
                   Obx(() {
                     return ListView(
                       shrinkWrap: true,
@@ -87,7 +139,9 @@ class CoreView extends GetView<CoreController> {
                             style: Get.textTheme.labelMedium!.copyWith(
                               color: ThemeApp().dangerColor,
                             )),
-                        onTap: () {},
+                        onTap: () {
+                          Get.find<AuthController>().signOut();
+                        },
                       ),
                     );
                   }),

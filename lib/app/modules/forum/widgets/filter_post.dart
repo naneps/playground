@@ -1,10 +1,7 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:playground/app/common/ui/inputs/x_input.dart';
-import 'package:playground/app/common/ui/overlays/scalled_dialog.dart';
-import 'package:playground/app/modules/auth/views/auth_view.dart';
+import 'package:playground/app/modules/forum/controllers/post_controller.dart';
 
 class FilterPost extends StatelessWidget {
   const FilterPost({super.key});
@@ -50,17 +47,7 @@ class FilterPost extends StatelessWidget {
                   padding: EdgeInsets.zero,
                 ),
                 onPressed: () {
-                  Get.dialog(ScaleDialog(
-                    child: BackdropFilter(
-                      filter: ImageFilter.blur(sigmaX: 2, sigmaY: 5),
-                      child: const AlertDialog(
-                        scrollable: true,
-                        backgroundColor: Colors.transparent,
-                        contentPadding: EdgeInsets.zero,
-                        content: AuthView(),
-                      ),
-                    ),
-                  ));
+                  Get.find<PostController>().createPost();
                 },
                 child: Text(
                   'Create Post',

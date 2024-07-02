@@ -25,7 +25,7 @@ class ForumMobileView extends GetView<ForumController> {
             pinned: true,
             flexibleSpace: FilterPost(),
           ),
-          PostListView(),
+          PostListView(padding: EdgeInsets.symmetric(horizontal: 10)),
         ],
       ),
     );

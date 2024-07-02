@@ -17,34 +17,48 @@ class ForumTabletView extends GetView {
           title: CustomAppBar(),
         ),
         SliverFillRemaining(
-            child: Row(
-          children: [
-            Expanded(
-              child: Container(
-                padding: const EdgeInsets.all(10),
-                child: const Column(
-                  children: [],
+            child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+          child: Row(
+            children: [
+              Expanded(
+                child: Container(
+                  padding: const EdgeInsets.all(10),
+                  child: const Column(
+                    children: [],
+                  ),
                 ),
               ),
-            ),
-            Expanded(
-              flex: 2,
-              child: Container(
-                child: const CustomScrollView(
-                  slivers: [
-                    SliverAppBar(
-                      pinned: true,
-                      flexibleSpace: FilterPost(),
+              const SizedBox(width: 20),
+              Expanded(
+                flex: 2,
+                child: Container(
+                  child: const CustomScrollView(
+                    slivers: [
+                      SliverAppBar(
+                        pinned: true,
+                        flexibleSpace: FilterPost(),
+                      ),
+                      PostListView(),
+                    ],
+                  ),
+                ),
+              ),
+              const SizedBox(width: 20),
+              Expanded(
+                child: Container(
+                  decoration: const BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(20),
+                      bottomLeft: Radius.circular(20),
                     ),
-                    PostListView(),
-                  ],
+                    boxShadow: [],
+                  ),
                 ),
               ),
-            ),
-            Expanded(
-              child: Container(),
-            ),
-          ],
+            ],
+          ),
         ))
       ],
     );

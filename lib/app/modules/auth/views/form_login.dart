@@ -35,11 +35,20 @@ class FormLogin extends GetView<AuthController> {
             const SecureInput(),
             const SizedBox(height: 10),
             ElevatedButton(
-              onPressed: () {},
+              onPressed: () {
+                if (controller.signInFormKey.currentState!.validate()) {
+                  controller.signInWithEmailAndPassword();
+                }
+              },
               child: const Text('Sign in'),
             ),
+            const SizedBox(
+              height: 5,
+            ),
             ElevatedButton.icon(
-              onPressed: () {},
+              onPressed: () {
+                controller.signInWithGitHub();
+              },
               style: ElevatedButton.styleFrom(backgroundColor: Colors.black),
               icon: Icon(MdiIcons.github),
               label: const Text('Sign in with Github'),

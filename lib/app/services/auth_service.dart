@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
+import 'package:playground/app/common/ui/overlays/loading_dialog.dart';
 import 'package:playground/app/modules/auth/views/github_sign_view.dart';
 import 'package:playground/app/services/user_service_information.dart';
 
@@ -13,7 +14,74 @@ class AuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final UserService userService = Get.find<UserService>();
 
-  Future<void> loginWithEmailAndPassword(String email, String password) async {
+  Future<http.Response> post(String url, Map<String, String> body) async {
+    final response = await http.post(
+      Uri.parse(url),
+      headers: {
+        'Accept': 'application/json',
+      },
+      body: body,
+    );
+
+    return response;
+  }
+
+  Future<void> registerWithEmailAndPassword(
+    String email,
+    String password,
+    String name, {
+    VoidCallback? onFail,
+    VoidCallback? onSuccess,
+  }) async {
+    try {
+      LoadingDialog.show(Get.context!);
+      final UserCredential userCredential =
+          await _auth.createUserWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+      userCredential.user!.updateDisplayName(name);
+      if (userCredential.user != null) {
+        await userCredential.user!.updateDisplayName(name);
+        await userService.createUserInFirestore(userCredential.user!);
+        userCredential.user!.sendEmailVerification();
+        LoadingDialog.hide(Get.context!);
+        if (onSuccess != null) {
+          onSuccess();
+        }
+      } else {
+        Get.snackbar('Error', 'Failed to register');
+        if (onFail != null) {
+          onFail();
+        }
+      }
+    } catch (e) {
+      Get.snackbar('Error', 'Failed to register: $e');
+      if (onFail != null) {
+        onFail();
+      }
+      print('Error during registration: $e');
+    } finally {
+      LoadingDialog.hide(Get.context!);
+    }
+  }
+
+  Future<void> sendPasswordResetEmail(String email) async {
+    try {
+      await _auth.sendPasswordResetEmail(email: email);
+      Get.snackbar('Success', 'Password reset email sent');
+    } catch (e) {
+      Get.snackbar('Error', 'Failed to send password reset email: $e');
+      print('Error during password reset: $e');
+    }
+  }
+
+  Future<void> signInWithEmailAndPassword(
+    String email,
+    String password, {
+    VoidCallback? onSuccess,
+    VoidCallback? onFail,
+  }) async {
     try {
       final UserCredential userCredential =
           await _auth.signInWithEmailAndPassword(
@@ -24,34 +92,18 @@ class AuthService {
       if (userCredential.user != null) {
         Get.snackbar('Success', 'Logged in successfully');
         await userService.createUserInFirestore(userCredential.user!);
+        if (onSuccess != null) {
+          onSuccess();
+        }
       } else {
         Get.snackbar('Error', 'Failed to login');
+        if (onFail != null) {
+          onFail();
+        }
       }
     } catch (e) {
       Get.snackbar('Error', 'Failed to login: $e');
       print('Error during login: $e');
-    }
-  }
-
-  Future<void> registerWithEmailAndPassword(
-      String email, String password, String name) async {
-    try {
-      final UserCredential userCredential =
-          await _auth.createUserWithEmailAndPassword(
-        email: email,
-        password: password,
-      );
-      userCredential.user!.sendEmailVerification();
-      userCredential.user!.updateDisplayName(name);
-      if (userCredential.user != null) {
-        Get.snackbar('Success', 'Registered successfully');
-        await userService.createUserInFirestore(userCredential.user!);
-      } else {
-        Get.snackbar('Error', 'Failed to register');
-      }
-    } catch (e) {
-      Get.snackbar('Error', 'Failed to register: $e');
-      print('Error during registration: $e');
     }
   }
 
@@ -81,7 +133,7 @@ class AuthService {
 
         final clientID = dotenv.env['GITHUB_CLIENT_ID'];
         final clientSecret = dotenv.env['GITHUB_CLIENT_SECRET'];
-        final response = await _post(
+        final response = await post(
           'https://github.com/login/oauth/access_token',
           {
             'client_id': clientID!,
@@ -120,17 +172,5 @@ class AuthService {
   Future<void> signOut() async {
     await _auth.signOut();
     userService.setUserOnlineStatus(false);
-  }
-
-  Future<http.Response> _post(String url, Map<String, String> body) async {
-    final response = await http.post(
-      Uri.parse(url),
-      headers: {
-        'Accept': 'application/json',
-      },
-      body: body,
-    );
-
-    return response;
   }
 }
