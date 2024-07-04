@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:playground/app/models/post_model.dart';
 import 'package:playground/app/modules/auth/views/auth_view.dart';
@@ -16,19 +15,15 @@ class PostController extends GetxController {
   final int limit = 3;
 
   Future<void> createPost() async {
-    if (userSerVice.user.value != null) {
+    if (userSerVice.user.value.uid != null) {
       final isVerified = await userSerVice.isEmailVerified();
       if (isVerified) {
         // Create post
         Get.toNamed('/create-post');
       } else {
-        Get.dialog(AlertDialog(
-          contentPadding: const EdgeInsets.all(0),
-          backgroundColor: Colors.transparent,
-          content: EmailVerificationWidget(
-            email: userSerVice.user.value!.email!,
-          ),
-        ));
+        Get.dialog(
+          EmailVerificationWidget(email: userSerVice.user.value.email!),
+        );
       }
     } else {
       Get.dialog(const AuthView());
@@ -66,7 +61,7 @@ class PostController extends GetxController {
   }
 
   bool isPostLiked(PostModel post) {
-    if (userSerVice.user.value == null) return false;
+    if (userSerVice.user.value.uid == null) return false;
     return post.likedBy.contains(userSerVice.uid);
   }
 
@@ -77,10 +72,6 @@ class PostController extends GetxController {
   }
 
   Future<void> toggleLike(PostModel post) async {
-    if (userSerVice.user.value == null) {
-      Get.dialog(const AuthView());
-      return;
-    }
     print('Toggling like for post ${post.id}');
     print("userSerVice.uid: ${userSerVice.uid}");
     if (isPostLiked(post)) {

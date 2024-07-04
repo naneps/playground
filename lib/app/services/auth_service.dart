@@ -40,10 +40,11 @@ class AuthService {
         email: email,
         password: password,
       );
-      userCredential.user!.updateDisplayName(name);
       if (userCredential.user != null) {
-        await userCredential.user!.updateDisplayName(name);
-        await userService.createUserInFirestore(userCredential.user!);
+        await userService.createUserInFirestore(
+          userCredential.user!,
+          name: name,
+        );
         userCredential.user!.sendEmailVerification();
         LoadingDialog.hide(Get.context!);
         if (onSuccess != null) {
@@ -66,6 +67,13 @@ class AuthService {
     }
   }
 
+  void sendEmailVerification() {
+    final user = _auth.currentUser;
+    if (user != null) {
+      user.sendEmailVerification();
+    }
+  }
+
   Future<void> sendPasswordResetEmail(String email) async {
     try {
       await _auth.sendPasswordResetEmail(email: email);
@@ -83,6 +91,7 @@ class AuthService {
     VoidCallback? onFail,
   }) async {
     try {
+      LoadingDialog.show(Get.context!);
       final UserCredential userCredential =
           await _auth.signInWithEmailAndPassword(
         email: email,
@@ -93,6 +102,7 @@ class AuthService {
         Get.snackbar('Success', 'Logged in successfully');
         await userService.createUserInFirestore(userCredential.user!);
         if (onSuccess != null) {
+          Get.back();
           onSuccess();
         }
       } else {
@@ -104,6 +114,8 @@ class AuthService {
     } catch (e) {
       Get.snackbar('Error', 'Failed to login: $e');
       print('Error during login: $e');
+    } finally {
+      LoadingDialog.hide(Get.context!);
     }
   }
 

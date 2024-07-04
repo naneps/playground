@@ -50,14 +50,9 @@ class AuthController extends GetxController
       user.name ?? '',
       onFail: () {},
       onSuccess: () {
-        Navigator.of(Get.overlayContext!).pop();
-        Get.dialog(AlertDialog(
-          contentPadding: const EdgeInsets.all(0),
-          backgroundColor: Colors.transparent,
-          content: EmailVerificationWidget(
-            email: user.email ?? '',
-          ),
-        ));
+        Future.delayed(const Duration(seconds: 1), () {
+          Get.dialog(EmailVerificationWidget(email: user.email ?? ''));
+        });
       },
     );
     print('registerWithEmailAndPassword');
@@ -69,6 +64,9 @@ class AuthController extends GetxController
   Future<void> sendPasswordResetEmail() async {}
 
   Future<void> signInWithEmailAndPassword() async {
+    print('signInWithEmailAndPassword');
+    print(user.email);
+    print(user.password);
     await _authService.signInWithEmailAndPassword(
       user.email ?? '',
       user.password ?? '',

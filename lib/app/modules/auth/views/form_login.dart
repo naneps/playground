@@ -30,13 +30,33 @@ class FormLogin extends GetView<AuthController> {
             XInput(
               hintText: 'Email',
               prefixIcon: Icon(MdiIcons.emailOutline),
+              onSaved: (value) {
+                controller.user.email = value!;
+              },
+              validator: (value) {
+                if (value!.isEmpty) {
+                  return 'Email is required';
+                }
+                return null;
+              },
             ),
             const SizedBox(height: 10),
-            const SecureInput(),
+            SecureInput(
+              onSaved: (value) {
+                controller.user.password = value!;
+              },
+              validator: (value) {
+                if (value!.isEmpty) {
+                  return 'Password is required';
+                }
+                return null;
+              },
+            ),
             const SizedBox(height: 10),
             ElevatedButton(
               onPressed: () {
                 if (controller.signInFormKey.currentState!.validate()) {
+                  controller.signInFormKey.currentState!.save();
                   controller.signInWithEmailAndPassword();
                 }
               },

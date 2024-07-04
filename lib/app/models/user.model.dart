@@ -9,11 +9,12 @@ class UserModel {
   String? password;
   DateTime? birthday;
   String? role;
-
+  Gender? gender;
   String? about;
   bool? online;
   DateTime? emailVerifiedAt;
   DateTime? lastOnline;
+  String? fcmToken;
   Map<String, bool>?
       typingStatus; // Map untuk menyimpan status typing per chat room
 
@@ -31,6 +32,8 @@ class UserModel {
     this.typingStatus,
     this.emailVerifiedAt,
     this.lastOnline,
+    this.gender = Gender.male,
+    this.fcmToken,
   });
 
   UserModel.fromJson(Map<String, dynamic> json) {
@@ -44,6 +47,8 @@ class UserModel {
     role = json['role'];
     about = json['about'];
     online = json['online'];
+    gender = Gender.male;
+    fcmToken = json['fcmToken'] ?? '';
     emailVerifiedAt = json['emailVerifiedAt']?.toDate();
     lastOnline = json['lastOnline']?.toDate();
     typingStatus = json['typingStatus'] != null
@@ -56,14 +61,16 @@ class UserModel {
     data['uid'] = uid;
     data['name'] = name;
     data['email'] = email;
-    data['password'] = password;
     data['birthday'] = birthday;
     data['role'] = role;
     data['about'] = about;
     data['online'] = online;
+    data['avatar'] = avatar;
     data['typingStatus'] = typingStatus;
     data['emailVerifiedAt'] = emailVerifiedAt;
     data['lastOnline'] = lastOnline;
+    data['gender'] = gender.toString().split('.').last;
+    data['fcmToken'] = fcmToken;
 
     return data;
   }
@@ -92,8 +99,9 @@ class UserModel {
     data['password'] = password;
     return data;
   }
-}
 
-extension GenderExtension on Gender {
-//  make name
+  @override
+  String toString() {
+    return 'UserModel{uid: $uid, name: $name, username: $username, email: $email, avatar: $avatar, password: $password, birthday: $birthday, |';
+  }
 }

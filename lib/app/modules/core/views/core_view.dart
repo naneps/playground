@@ -43,7 +43,7 @@ class CoreView extends GetView<CoreController> {
                 children: [
                   //   profile user
                   Obx(() {
-                    return controller.user.value == null
+                    return controller.userService.user.value.uid == null
                         ? ElevatedButton(
                             onPressed: () {
                               controller.zoomController.toggle!();
@@ -76,14 +76,17 @@ class CoreView extends GetView<CoreController> {
                               horizontalTitleGap: 10,
                               contentPadding: EdgeInsets.zero,
                               leading: AvatarWidget(
-                                imageUrl: controller.user.value?.photoURL ?? '',
+                                imageUrl:
+                                    controller.userService.user.value.avatar ??
+                                        '',
                               ),
-                              title:
-                                  Text(controller.user.value?.displayName ?? '',
-                                      style: Get.textTheme.labelSmall!.copyWith(
-                                        color: Colors.white,
-                                      )),
-                              subtitle: Text(controller.user.value!.email!,
+                              title: Text(
+                                  controller.userService.user.value.name ?? '',
+                                  style: Get.textTheme.labelSmall!.copyWith(
+                                    color: Colors.white,
+                                  )),
+                              subtitle: Text(
+                                  controller.userService.user.value.email ?? '',
                                   style: Get.textTheme.bodySmall!.copyWith(
                                     color: Colors.white,
                                   )),
@@ -129,7 +132,7 @@ class CoreView extends GetView<CoreController> {
                   ),
                   Obx(() {
                     return Visibility(
-                      visible: controller.isLogin.value,
+                      visible: controller.userService.user.value.uid != null,
                       child: ListTile(
                         dense: true,
                         visualDensity: VisualDensity.compact,

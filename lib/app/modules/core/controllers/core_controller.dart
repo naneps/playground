@@ -10,7 +10,6 @@ import 'package:url_launcher/url_launcher.dart';
 
 class CoreController extends GetxController {
   //TODO: Implement CoreController
-  final FirebaseAuth _auth = FirebaseAuth.instance;
   final userService = Get.find<UserService>();
   RxBool isLogin = false.obs;
   Rx<User?> user = Rx<User?>(null);
@@ -71,16 +70,6 @@ class CoreController extends GetxController {
   void onInit() {
     // TODO: implement onInit
     super.onInit();
-    _auth.authStateChanges().listen((User? user) {
-      if (user != null) {
-        isLogin.value = true;
-        userService.setUserOnlineStatus(true);
-      } else {
-        isLogin.value = false;
-        userService.setUserOnlineStatus(false);
-      }
-      this.user.value = user;
-    });
   }
 
   @override
