@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:get/get.dart';
-import 'package:playground/app/modules/forum/controllers/post_controller.dart';
 import 'package:playground/app/modules/forum/widgets/post_widget.dart';
+import 'package:playground/app/modules/post/controllers/post_controller.dart';
 
 class PostListView extends GetView<PostController> {
   final EdgeInsets padding;

@@ -64,12 +64,12 @@ class AuthController extends GetxController
   Future<void> sendPasswordResetEmail() async {}
 
   Future<void> signInWithEmailAndPassword() async {
-    print('signInWithEmailAndPassword');
-    print(user.email);
-    print(user.password);
     await _authService.signInWithEmailAndPassword(
       user.email ?? '',
       user.password ?? '',
+      onSuccess: () {
+        Navigator.of(Get.overlayContext!).pop();
+      },
     );
   }
 

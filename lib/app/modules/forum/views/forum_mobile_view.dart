@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:playground/app/common/custom_app_bar.dart';
 import 'package:playground/app/modules/forum/controllers/forum_controller.dart';
-import 'package:playground/app/modules/forum/views/post_list_view.dart';
-import 'package:playground/app/modules/forum/widgets/filter_post.dart';
+import 'package:playground/app/modules/post/views/post_list_view.dart';
+import 'package:playground/app/modules/post/widgets/filter_post.dart';
 
 class ForumMobileView extends GetView<ForumController> {
   const ForumMobileView({super.key});

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:playground/app/common/ui/inputs/x_input.dart';
-import 'package:playground/app/modules/forum/controllers/post_controller.dart';
+import 'package:playground/app/modules/post/controllers/post_controller.dart';
 
 class FilterPost extends StatelessWidget {
   const FilterPost({super.key});

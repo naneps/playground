@@ -2,28 +2,28 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:playground/app/models/user.model.dart';
 
 class PostModel {
-  final String id;
-  final String content;
-  final String imageUrl;
-  final UserModel author;
-  final List<String> hashtags;
-  final int views;
-  final int comments;
-  final int likes;
-  final DateTime createdAt;
-  final List<String> likedBy; // Tambahan
+  final String? id;
+  final String? content;
+  final String? imageUrl;
+  final UserModel? author;
+  final List<String>? hashtags;
+  final int? views;
+  final int? comments;
+  final int? likes;
+  final DateTime? createdAt;
+  final List<String>? likedBy; // Tambahan
 
   PostModel({
-    required this.id,
-    required this.content,
-    required this.imageUrl,
-    required this.author,
-    required this.hashtags,
-    required this.views,
-    required this.comments,
-    required this.likes,
-    required this.createdAt,
-    required this.likedBy, // Tambahan
+    this.id,
+    this.content,
+    this.imageUrl,
+    this.author,
+    this.hashtags,
+    this.views,
+    this.comments,
+    this.likes,
+    this.createdAt,
+    this.likedBy, // Tambahan
   });
 
   factory PostModel.fromJson(Map<String, dynamic> json) {
@@ -48,7 +48,7 @@ class PostModel {
       'id': id,
       'content': content,
       'imageUrl': imageUrl,
-      'author': author.toPostJson(),
+      'author': author!.toPostJson(),
       'hashtags': hashtags,
       'views': views,
       'comments': comments,

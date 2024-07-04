@@ -16,6 +16,7 @@ class MainApp extends StatelessWidget {
       theme: ThemeApp(context: context).themeData,
       initialRoute: AppPages.INITIAL,
       getPages: AppPages.routes,
+      defaultTransition: Transition.fadeIn,
       scrollBehavior: const MaterialScrollBehavior().copyWith(
         scrollbars: false,
         overscroll: true,

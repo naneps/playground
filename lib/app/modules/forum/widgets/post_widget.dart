@@ -74,7 +74,7 @@ class PostWidget extends StatelessWidget {
                     clipBehavior: Clip.antiAliasWithSaveLayer,
                     spacing: 5,
                     runSpacing: 2,
-                    children: post.hashtags.map((hashtag) {
+                    children: post.hashtags!.map((hashtag) {
                           return Chip(
                             label: Text(
                               '#$hashtag',
@@ -99,17 +99,17 @@ class PostWidget extends StatelessWidget {
                           child: CircleAvatar(
                             radius: 18,
                             backgroundImage:
-                                NetworkImage(post.author.avatar ?? ''),
+                                NetworkImage(post.author!.avatar ?? ''),
                           ),
                         ),
                         visualDensity: VisualDensity.comfortable,
                         title: Text(
-                          post.author.name ?? '',
+                          post.author!.name ?? '',
                           style: Theme.of(context).textTheme.labelMedium,
                         ),
                         dense: true,
                         subtitle: Text(
-                          '${post.createdAt.difference(DateTime.now()).inHours} hours ago',
+                          '${post.createdAt!.difference(DateTime.now()).inHours} hours ago',
                           style: Theme.of(context).textTheme.bodyMedium,
                         ),
                       ),
