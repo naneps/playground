@@ -11,7 +11,9 @@ class PostRepository extends BaseRepository<PostModel> {
 
   @override
   Future<void> add(PostModel item) async {
-    await collection.doc(item.id).set(toJson(item));
+    await collection.add(toJson(item)).then((value) {
+      value.update({'id': value.id});
+    });
   }
 
   @override
@@ -24,12 +26,16 @@ class PostRepository extends BaseRepository<PostModel> {
 
   @override
   Future<List<PostModel>> getAll() async {
-    final querySnapshot = await collection.get();
+    final querySnapshot =
+        await collection.orderBy('createdAt', descending: true).get();
     return querySnapshot.docs
-        .map((doc) => fromJson(doc.data() as Map<String, dynamic>))
+        .map(
+          (doc) => fromJson(doc.data() as Map<String, dynamic>),
+        )
         .toList();
   }
 
+  @override
   @override
   Future<List<PostModel>> getFiltered({
     required Map<String, dynamic> filters,
@@ -45,7 +51,7 @@ class PostRepository extends BaseRepository<PostModel> {
       query = query.startAfterDocument(startAfter);
     }
 
-    query = query.limit(limit);
+    query = query.orderBy('createdAt', descending: true).limit(limit);
 
     final querySnapshot = await query.get();
     return querySnapshot.docs
@@ -67,7 +73,13 @@ class PostRepository extends BaseRepository<PostModel> {
 
   @override
   Stream<List<PostModel>> streamAll() {
-    return collection.snapshots().map((snapshot) {
+    return collection
+        .orderBy(
+          'createdAt',
+          descending: true,
+        )
+        .snapshots()
+        .map((snapshot) {
       return snapshot.docs
           .map((doc) => fromJson(doc.data() as Map<String, dynamic>))
           .toList();

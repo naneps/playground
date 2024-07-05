@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class ThemeApp {
-  Color primaryColor = const Color.fromARGB(255, 0, 42, 158);
+  Color primaryColor = const Color.fromARGB(255, 44, 82, 157);
   Color secondaryColor = const Color.fromARGB(255, 116, 197, 255);
   Color tertiaryColor = const Color.fromARGB(255, 255, 116, 116);
   Color backgroundColor = const Color.fromARGB(255, 252, 252, 252);
@@ -226,7 +226,6 @@ class ThemeApp {
           shape: MaterialStateProperty.all(
             RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(5),
-              side: BorderSide(color: primaryColor, width: 0),
             ),
           ),
         ),

@@ -53,7 +53,7 @@ class PostWidget extends StatelessWidget {
                   children: [
                     Expanded(
                       child: Text(
-                        post.content ?? '',
+                        post.title ?? "NOTHING TO SHOW",
                         style: Theme.of(context).textTheme.headlineSmall,
                         maxLines: 2,
                         overflow: TextOverflow.ellipsis,
@@ -68,23 +68,25 @@ class PostWidget extends StatelessWidget {
                     ),
                   ],
                 ),
-                SizedBox(
-                  height: 50,
-                  child: Wrap(
-                    clipBehavior: Clip.antiAliasWithSaveLayer,
-                    spacing: 5,
-                    runSpacing: 2,
-                    children: post.hashtags!.map((hashtag) {
-                          return Chip(
-                            label: Text(
-                              '#$hashtag',
-                              style: Theme.of(context).textTheme.bodySmall,
-                            ),
-                          );
-                        }).toList() ??
-                        [],
+                if (post.hashtags!.isNotEmpty) ...[
+                  SizedBox(
+                    height: 50,
+                    child: Wrap(
+                      clipBehavior: Clip.antiAliasWithSaveLayer,
+                      spacing: 5,
+                      runSpacing: 2,
+                      children: post.hashtags!.map((hashtag) {
+                            return Chip(
+                              label: Text(
+                                '#$hashtag',
+                                style: Theme.of(context).textTheme.bodySmall,
+                              ),
+                            );
+                          }).toList() ??
+                          [],
+                    ),
                   ),
-                ),
+                ],
                 Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.center,

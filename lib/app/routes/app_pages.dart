@@ -44,6 +44,7 @@ class AppPages {
           BoxShadowGeneratorBinding(),
           GradientGeneratorBinding(),
           ForumBinding(),
+          PostBinding(),
           ToolsBinding(),
           AnimationsBinding(),
           UiComponentsBinding(),

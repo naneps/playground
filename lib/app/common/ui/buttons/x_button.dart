@@ -38,7 +38,7 @@ class XButton extends StatelessWidget {
         fixedSize: fixedSize,
         padding: padding,
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(borderRadius ?? 10),
+          borderRadius: BorderRadius.circular(borderRadius ?? 5),
           side: borderSide ?? BorderSide.none,
         ),
         visualDensity: VisualDensity.adaptivePlatformDensity,

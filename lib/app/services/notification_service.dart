@@ -6,6 +6,17 @@ import 'package:get/get.dart';
 class NotificationService extends GetxService {
   final FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  FirebaseFirestore firestore = FirebaseFirestore.instance;
+  Future<List<String>> getFcmTokens() async {
+    QuerySnapshot querySnapshot = await firestore.collection('users').get();
+    List<String> tokens = [];
+    for (var doc in querySnapshot.docs) {
+      if (doc['fcmToken'] != null) {
+        tokens.add(doc['fcmToken']);
+      }
+    }
+    return tokens;
+  }
 
   void handleNotificationPayload(Map<String, dynamic> data) {
     // Handle notification payload, e.g., navigate to a specific screen
@@ -56,6 +67,14 @@ class NotificationService extends GetxService {
     // TODO: implement onInit
     super.onInit();
     init();
+  }
+
+  //   send all users notification
+  Future<void> sendAllUsersNotification(String title, String body) async {
+    List<String> tokens = await getFcmTokens();
+    for (String token in tokens) {
+      await sendNotification(token, title, body);
+    }
   }
 
   Future<void> sendNotification(String token, String title, String body) async {
