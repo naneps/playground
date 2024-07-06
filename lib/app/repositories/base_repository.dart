@@ -22,6 +22,7 @@ abstract class BaseRepository<T> {
   });
 
   Stream<List<T>> streamAll();
+  Stream<T> streamOne(String id);
 
   Map<String, dynamic> toJson(T item);
 

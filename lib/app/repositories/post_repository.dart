@@ -1,4 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:get/get.dart';
+import 'package:playground/app/common/ui/overlays/loading_dialog.dart';
 import 'package:playground/app/models/post_model.dart';
 
 import 'base_repository.dart';
@@ -11,9 +13,11 @@ class PostRepository extends BaseRepository<PostModel> {
 
   @override
   Future<void> add(PostModel item) async {
+    LoadingDialog.show(Get.context!);
     await collection.add(toJson(item)).then((value) {
       value.update({'id': value.id});
     });
+    LoadingDialog.hide(Get.context!);
   }
 
   @override
@@ -83,6 +87,13 @@ class PostRepository extends BaseRepository<PostModel> {
       return snapshot.docs
           .map((doc) => fromJson(doc.data() as Map<String, dynamic>))
           .toList();
+    });
+  }
+
+  @override
+  Stream<PostModel> streamOne(String id) {
+    return collection.doc(id).snapshots().map((snapshot) {
+      return fromJson(snapshot.data() as Map<String, dynamic>);
     });
   }
 

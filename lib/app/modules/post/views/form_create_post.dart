@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:playground/app/common/ui/buttons/x_button.dart';
+import 'package:playground/app/common/ui/inputs/markdown_input.dart';
 import 'package:playground/app/common/ui/inputs/x_input.dart';
 import 'package:playground/app/modules/post/controllers/create_post_controller.dart';
-import 'package:quill_html_editor/quill_html_editor.dart';
 
 class FormCreatePost extends GetView<CreatePostController> {
   const FormCreatePost({super.key});
@@ -42,49 +42,14 @@ class FormCreatePost extends GetView<CreatePostController> {
                 ),
                 const SizedBox(height: 10),
                 Container(
-                  padding: const EdgeInsets.all(10),
-                  decoration: BoxDecoration(
-                    color: Colors.grey.shade100,
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  child: Column(
-                    children: [
-                      ToolBar(
-                        controller: controller.qController,
-                        activeIconColor: Theme.of(context).primaryColor,
-                        toolBarConfig: const [
-                          // all content excep image
-                          ToolBarStyle.bold,
-                          ToolBarStyle.italic,
-                          ToolBarStyle.underline,
-                          ToolBarStyle.link,
-                          ToolBarStyle.align,
-                          ToolBarStyle.background,
-                          ToolBarStyle.listBullet,
-                          ToolBarStyle.listOrdered,
-                          ToolBarStyle.listOrdered,
-                          ToolBarStyle.codeBlock,
-                          ToolBarStyle.color,
-                          ToolBarStyle.clean,
-                        ],
-                      ),
-                      const SizedBox(height: 10),
-                      QuillHtmlEditor(
-                        controller: controller.qController,
-                        minHeight: 300,
-                        hintText: "What's on your mind?",
-                        loadingBuilder: (context) {
-                          return const Center(
-                            child: CircularProgressIndicator(),
-                          );
-                        },
-                        onTextChanged: (val) {
-                          controller.post.value.content = val;
-                        },
-                      ),
-                    ],
-                  ),
-                )
+                    padding: const EdgeInsets.all(10),
+                    constraints:
+                        BoxConstraints(minHeight: 200, maxHeight: Get.height),
+                    decoration: BoxDecoration(
+                      color: Colors.grey.shade100,
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: const MarkdownInput())
               ],
             ),
           ),

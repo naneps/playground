@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:get/get.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:playground/app/modules/forum/widgets/post_widget.dart';
 import 'package:playground/app/modules/post/controllers/post_controller.dart';
 
@@ -14,9 +15,18 @@ class PostListView extends GetView<PostController> {
   Widget build(BuildContext context) {
     return Obx(() {
       if (controller.posts.isEmpty) {
-        return const SliverToBoxAdapter(
-          child: Center(
-            child: Text('No posts available.'),
+        return SliverFillRemaining(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Icon(MdiIcons.inboxArrowDownOutline,
+                  size: 100, color: Theme.of(context).primaryColor),
+              Text('No posts available.',
+                  style: Theme.of(context).textTheme.titleLarge!.copyWith(
+                        color: Theme.of(context).primaryColor,
+                      )),
+            ],
           ),
         );
       }

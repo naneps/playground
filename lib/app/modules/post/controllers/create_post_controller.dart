@@ -12,7 +12,6 @@ class CreatePostController extends GetxController {
   final postRepository = Get.find<PostRepository>();
   void createPost() async {
     try {
-      print('Create Post');
       await postRepository.add(post.value.copyWith(
         author: userService.user.value,
         authorId: userService.user.value.uid,
@@ -23,6 +22,7 @@ class CreatePostController extends GetxController {
         views: 0,
         hashtags: [],
       ));
+      Get.back();
     } catch (e) {
       print(e);
     }

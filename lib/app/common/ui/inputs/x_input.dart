@@ -11,12 +11,14 @@ class XInput extends StatefulWidget {
   final List<TextInputFormatter>? inputFormatters;
   final int? maxLength;
   final int? maxLines;
+  final int? minLines;
   final bool obscureText;
   final TextInputType? keyboardType;
   final Widget? prefixIcon;
   final Widget? suffixIcon;
   final EdgeInsets? contentPadding;
   final FloatingLabelBehavior? floatingLabelBehavior;
+  final TextEditingController? controller;
   final String? hintText;
   final void Function(String?)? onSaved;
   const XInput({
@@ -25,12 +27,14 @@ class XInput extends StatefulWidget {
     this.onSaved,
     this.initialValue,
     this.validator,
+    this.controller,
     this.onChanged,
     this.floatingLabelBehavior,
     this.hasCounter = false,
     this.maxLength,
     this.obscureText = false,
     this.maxLines = 1,
+    this.minLines = 1,
     this.keyboardType,
     this.prefixIcon,
     this.hintText,
@@ -74,7 +78,7 @@ class XInputState extends State<XInput> {
       },
       maxLength: widget.hasCounter == true ? widget.maxLength : null,
       maxLines: widget.maxLines,
-      minLines: 1,
+      minLines: widget.minLines,
       keyboardType: widget.keyboardType,
       cursorColor: ThemeApp().primaryColor,
       inputFormatters: widget.inputFormatters,
