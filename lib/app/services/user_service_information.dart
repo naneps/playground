@@ -55,7 +55,6 @@ class UserService extends GetxService {
   @override
   void onInit() async {
     super.onInit();
-    await _getUserFromFirestore(uid).then((value) => user.value = value!);
     _auth.authStateChanges().listen(_onAuthStateChanged);
     _initializeFCMToken();
   }
@@ -151,9 +150,9 @@ class UserService extends GetxService {
   }
 
   void _onAuthStateChanged(User? firebaseUser) async {
-    print('AUTH CHANGES IN USER SERVICE');
     if (firebaseUser == null) {
       user.value = UserModel();
+      user.value.online = false;
     } else {
       _initializeFCMToken();
       user.value = (await _getUserFromFirestore(uid))!;

@@ -78,16 +78,26 @@ class RoomsView extends GetView<RoomsController> {
                           itemCount: controller.rooms.length,
                           itemBuilder: (context, index) {
                             final room = controller.rooms[index];
-                            return Container(
-                              decoration: BoxDecoration(
-                                color: Colors.white,
-                                border: Border.all(color: Colors.grey.shade100),
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                              child: Column(
-                                children: [
-                                  Text(room.name ?? 'room ${index + 1}'),
-                                ],
+                            return Hero(
+                              tag: room.id!,
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  border:
+                                      Border.all(color: Colors.grey.shade100),
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                                padding: const EdgeInsets.all(10),
+                                child: Column(
+                                  children: [
+                                    Text(
+                                      room.name ?? 'room ${index + 1}',
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .titleLarge,
+                                    ),
+                                  ],
+                                ),
                               ),
                             );
                           },

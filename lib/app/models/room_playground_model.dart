@@ -15,7 +15,7 @@ class MessageModel {
     return {
       'senderId': senderId,
       'content': content,
-      'timestamp': timestamp?.millisecondsSinceEpoch,
+      'timestamp': timestamp,
     };
   }
 
