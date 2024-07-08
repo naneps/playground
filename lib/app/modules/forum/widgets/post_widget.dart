@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:like_button/like_button.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
-import 'package:playground/app/common/theme.dart';
+import 'package:playground/app/common/ui/avatar_widget.dart';
 import 'package:playground/app/models/post_model.dart';
 import 'package:playground/app/modules/post/views/post_detail_view.dart';
 
@@ -110,14 +110,9 @@ class PostWidget extends StatelessWidget {
                             flex: 2,
                             child: ListTile(
                               contentPadding: EdgeInsets.zero,
-                              leading: CircleAvatar(
-                                radius: 20,
-                                backgroundColor: ThemeApp().primaryColor,
-                                child: CircleAvatar(
-                                  radius: 18,
-                                  backgroundImage:
-                                      NetworkImage(post.author!.avatar ?? ''),
-                                ),
+                              leading: AvatarWidget(
+                                imageUrl: post.author!.avatar!,
+                                gender: post.author!.gender!,
                               ),
                               visualDensity: VisualDensity.comfortable,
                               title: Text(
@@ -126,7 +121,7 @@ class PostWidget extends StatelessWidget {
                               ),
                               dense: true,
                               subtitle: Text(
-                                '${post.createdAt!.difference(DateTime.now()).inHours} hours ago',
+                                post.dateFromNow,
                                 style: Theme.of(context).textTheme.bodyMedium,
                               ),
                             ),

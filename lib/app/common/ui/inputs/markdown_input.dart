@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:markdown_widget/markdown_widget.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:playground/app/common/ui/code_preview.dart';
 
 class MarkdownInput extends StatefulWidget {
-  const MarkdownInput({super.key});
+  final ValueChanged<String> onChanged;
+
+  const MarkdownInput({super.key, required this.onChanged});
 
   @override
   State<MarkdownInput> createState() => _MarkdownInputState();
@@ -35,23 +38,47 @@ class _MarkdownInputState extends State<MarkdownInput> {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox.expand(
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(10),
+      ),
+      padding: const EdgeInsets.all(10),
+      constraints: const BoxConstraints(
+        minHeight: 300,
+        maxHeight: 500,
+      ),
       child: DefaultTabController(
         length: 2, // Two tabs: Input and Preview
         child: Column(
           children: [
-            const TabBar(
+            TabBar(
               tabs: [
-                Tab(
-                  icon: Icon(Icons.edit),
-                  text: 'Input',
+                Container(
+                  padding: const EdgeInsets.all(10),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(MdiIcons.text),
+                      const SizedBox(width: 10),
+                      const Text('Input'),
+                    ],
+                  ),
                 ),
-                Tab(
-                  icon: Icon(Icons.preview),
-                  text: 'Preview',
+                Container(
+                  padding: const EdgeInsets.all(10),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(MdiIcons.eye),
+                      const SizedBox(width: 10),
+                      const Text('Preview'),
+                    ],
+                  ),
                 ),
               ],
             ),
+            const SizedBox(height: 10),
             Expanded(
               child: TabBarView(
                 children: [
@@ -81,23 +108,22 @@ class _MarkdownInputState extends State<MarkdownInput> {
   Widget _buildInputTab() {
     return Column(
       children: [
-        Expanded(
-          child: TextField(
-            controller: _textEditingController,
-            decoration: InputDecoration(
-              hintText: 'Type your markdown here...',
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(10),
-              ),
+        TextField(
+          controller: _textEditingController,
+          decoration: InputDecoration(
+            hintText: 'Type your markdown here...',
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(10),
             ),
-            maxLines: 30,
-            minLines: 5,
-            onChanged: (value) {
-              setState(() {
-                _inputText = value;
-              });
-            },
           ),
+          maxLines: 30,
+          minLines: 5,
+          onChanged: (value) {
+            setState(() {
+              _inputText = value;
+              widget.onChanged(value); // Call the callback function
+            });
+          },
         ),
         // tools section
         Container(
@@ -125,28 +151,34 @@ class _MarkdownInputState extends State<MarkdownInput> {
 
   Widget _buildPreviewTab() {
     return Container(
-      padding: const EdgeInsets.all(8),
+      padding: const EdgeInsets.all(10),
       decoration: BoxDecoration(
-        color: Colors.grey.shade200,
+        color: Colors.white,
         borderRadius: BorderRadius.circular(10),
       ),
       child: MarkdownWidget(
-          data: _inputText,
-          config: MarkdownConfig(configs: [
-            PreConfig(
-              decoration: BoxDecoration(
-                color: Colors.black38,
-                borderRadius: BorderRadius.circular(10),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.grey.shade200,
-                    blurRadius: 10,
-                    spreadRadius: 5,
-                  ),
-                ],
-              ),
-            )
-          ])),
+        data: _inputText,
+        config: MarkdownConfig(configs: [
+          ImgConfig(
+            builder: (url, attributes) {
+              return Image.network(url);
+            },
+          ),
+          CodeConfig(
+              style: TextStyle(
+            backgroundColor: Colors.grey.shade100,
+            fontFamily: 'monospace',
+            fontSize: 12,
+          )),
+          PreConfig(
+            wrapper: (child, code, language) => CodeWrapperWidget(
+              child,
+              code,
+              language,
+            ),
+          )
+        ]),
+      ),
     );
   }
 

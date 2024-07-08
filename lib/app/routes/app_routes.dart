@@ -14,6 +14,7 @@ abstract class Routes {
   static const PROFILE = _Paths.PROFILE;
   static const AUTH = _Paths.AUTH;
   static const POST = _Paths.POST;
+  static const PLAYGROUND = _Paths.PLAYGROUND;
 }
 
 abstract class _Paths {
@@ -29,4 +30,5 @@ abstract class _Paths {
   static const PROFILE = '/profile';
   static const AUTH = '/auth';
   static const POST = '/post';
+  static const PLAYGROUND = '/playground';
 }

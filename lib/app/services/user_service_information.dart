@@ -157,8 +157,7 @@ class UserService extends GetxService {
     } else {
       _initializeFCMToken();
       user.value = (await _getUserFromFirestore(uid))!;
-      print('User updated in user service');
-      print(user.value);
+      user.value.online = true;
       setUserOnlineStatus(true);
     }
   }

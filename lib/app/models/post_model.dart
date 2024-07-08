@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:playground/app/common/utils/date_formatter.dart';
 import 'package:playground/app/models/user.model.dart';
 
 class PostContentModel {
@@ -55,6 +56,8 @@ class PostModel {
           : [], // Tambahan
     );
   }
+
+  String get dateFromNow => DateFormatter().dateFromNow(createdAt.toString());
 
   //   MAKE COPY
   PostModel copyWith({

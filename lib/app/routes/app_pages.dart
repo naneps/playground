@@ -14,6 +14,8 @@ import '../modules/gradient_generator/bindings/gradient_generator_binding.dart';
 import '../modules/gradient_generator/views/gradient_generator_view.dart';
 import '../modules/home/bindings/home_binding.dart';
 import '../modules/home/views/home_view.dart';
+import '../modules/playground/bindings/playground_binding.dart';
+import '../modules/playground/views/playground_view.dart';
 import '../modules/post/bindings/post_binding.dart';
 import '../modules/post/views/post_view.dart';
 import '../modules/profile/bindings/profile_binding.dart';
@@ -48,6 +50,7 @@ class AppPages {
           ToolsBinding(),
           AnimationsBinding(),
           UiComponentsBinding(),
+          PlaygroundBinding()
         ]),
     GetPage(
       name: _Paths.BOX_SHADOW_GENERATOR,
@@ -93,6 +96,11 @@ class AppPages {
       name: _Paths.POST,
       page: () => const PostView(),
       binding: PostBinding(),
+    ),
+    GetPage(
+      name: _Paths.PLAYGROUND,
+      page: () => const PlaygroundView(),
+      binding: PlaygroundBinding(),
     ),
   ];
 

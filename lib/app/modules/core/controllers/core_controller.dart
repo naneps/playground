@@ -42,6 +42,12 @@ class CoreController extends GetxController {
       iconData: MdiIcons.tools,
     ),
     NavigationModel(
+      title: 'Playground',
+      icon: 'playground',
+      route: '',
+      iconData: MdiIcons.playCircle,
+    ),
+    NavigationModel(
       title: 'Forum',
       icon: 'contact',
       route: Routes.FORUM,

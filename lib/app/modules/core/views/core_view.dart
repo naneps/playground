@@ -10,6 +10,7 @@ import 'package:playground/app/modules/auth/controllers/auth_controller.dart';
 import 'package:playground/app/modules/auth/views/auth_view.dart';
 import 'package:playground/app/modules/forum/views/forum_view.dart';
 import 'package:playground/app/modules/home/views/home_view.dart';
+import 'package:playground/app/modules/playground/views/playground_view.dart';
 import 'package:playground/app/modules/tools/views/tools_view.dart';
 import 'package:playground/app/modules/ui_components/views/ui_components_view.dart';
 
@@ -162,6 +163,7 @@ class CoreView extends GetView<CoreController> {
             UiComponentsView(),
             AnimationsView(),
             ToolsView(),
+            PlaygroundView(),
             ForumView()
             // OrderView(),
             // CartView(),
