@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get.dart';
 import 'package:playground/app/common/ui/overlays/loading_dialog.dart';
 import 'package:playground/app/models/room_playground_model.dart';
+import 'package:playground/app/models/user.model.dart';
 import 'package:playground/app/repositories/base_repository.dart';
 
 class RoomRepository extends BaseRepository<RoomPlayGroundModel> {
@@ -18,6 +19,14 @@ class RoomRepository extends BaseRepository<RoomPlayGroundModel> {
       value.update({'id': value.id});
     });
     LoadingDialog.hide(Get.context!);
+  }
+
+  Future<Stream<bool>> alReadyJoin(String roomId, String userId) async {
+    return collection.doc(roomId).snapshots().map((event) {
+      final data = event.data() as Map<String, dynamic>;
+      final userIds = data['userIds'] as List;
+      return userIds.contains(userId);
+    });
   }
 
   @override
@@ -62,6 +71,20 @@ class RoomRepository extends BaseRepository<RoomPlayGroundModel> {
           .map((e) => fromJson(e.data() as Map<String, dynamic>))
           .toList();
     });
+  }
+
+  Future<UserModel> getUser(String userId) async {
+    final user = await firestore.collection('users').doc(userId).get();
+    return UserModel.fromJson(user.data() as Map<String, dynamic>);
+  }
+
+  Future<bool> joinRoom(String roomId, String userId) async {
+    final room = await collection.doc(roomId).get();
+    final data = room.data() as Map<String, dynamic>;
+    final userIds = data['userIds'] as List;
+    userIds.add(userId);
+    await collection.doc(roomId).update({'userIds': userIds});
+    return true;
   }
 
   @override

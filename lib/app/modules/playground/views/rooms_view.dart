@@ -4,6 +4,7 @@ import 'package:material_design_icons_flutter/material_design_icons_flutter.dart
 import 'package:playground/app/common/ui/inputs/x_input.dart';
 import 'package:playground/app/modules/playground/controllers/rooms_controller.dart';
 import 'package:playground/app/modules/playground/views/form_create_room.dart';
+import 'package:playground/app/modules/playground/widgets/room_widget.dart';
 
 class RoomsView extends GetView<RoomsController> {
   const RoomsView({super.key});
@@ -11,10 +12,14 @@ class RoomsView extends GetView<RoomsController> {
   @override
   Widget build(BuildContext context) {
     return Column(
+      mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         // search filter
         Container(
           child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.start,
             children: [
               Expanded(
                 child: XInput(
@@ -24,23 +29,25 @@ class RoomsView extends GetView<RoomsController> {
               ),
               const SizedBox(width: 10),
               ElevatedButton.icon(
-                style: ElevatedButton.styleFrom(fixedSize: const Size(150, 40)),
+                style: ElevatedButton.styleFrom(fixedSize: const Size(140, 40)),
                 onPressed: () {
                   Get.dialog(FormCreateRoom(
                     onCreate: (val) {
-                      print(val.name);
-                      print(val.name);
                       controller.currentRoom.update((room) {
                         room!.name = val.name!;
                         room.description = val.description!;
                       });
-                      print(controller.currentRoom.value.name);
                       controller.createRoom();
                     },
                   ));
                 },
                 icon: Icon(MdiIcons.plus),
-                label: const Text('Create Room'),
+                label: Text(
+                  'Create Room',
+                  style: Theme.of(context).textTheme.labelSmall!.copyWith(
+                        color: Colors.white,
+                      ),
+                ),
               ),
             ],
           ),
@@ -78,27 +85,8 @@ class RoomsView extends GetView<RoomsController> {
                           itemCount: controller.rooms.length,
                           itemBuilder: (context, index) {
                             final room = controller.rooms[index];
-                            return Hero(
-                              tag: room.id!,
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  border:
-                                      Border.all(color: Colors.grey.shade100),
-                                  borderRadius: BorderRadius.circular(10),
-                                ),
-                                padding: const EdgeInsets.all(10),
-                                child: Column(
-                                  children: [
-                                    Text(
-                                      room.name ?? 'room ${index + 1}',
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .titleLarge,
-                                    ),
-                                  ],
-                                ),
-                              ),
+                            return RoomWidget(
+                              room: room,
                             );
                           },
                         );

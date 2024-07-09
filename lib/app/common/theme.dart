@@ -106,6 +106,14 @@ class ThemeApp {
           fontWeight: FontWeight.bold,
         ),
       ),
+      popupMenuTheme: PopupMenuThemeData(
+        color: Colors.white,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10),
+        ),
+        elevation: 0,
+        iconColor: primaryColor,
+      ),
       chipTheme: ChipThemeData(
         backgroundColor: backgroundColor,
         disabledColor: Colors.grey.shade300,
