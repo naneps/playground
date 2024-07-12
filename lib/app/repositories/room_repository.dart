@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get.dart';
 import 'package:playground/app/common/ui/overlays/loading_dialog.dart';
+import 'package:playground/app/models/player.model.dart';
 import 'package:playground/app/models/room_playground_model.dart';
 import 'package:playground/app/models/user.model.dart';
 import 'package:playground/app/repositories/base_repository.dart';
@@ -9,7 +10,6 @@ class RoomRepository extends BaseRepository<RoomPlayGroundModel> {
   RoomRepository(super.firestore);
 
   @override
-  // TODO: implement collection
   CollectionReference get collection => firestore.collection('rooms');
 
   @override
@@ -31,7 +31,6 @@ class RoomRepository extends BaseRepository<RoomPlayGroundModel> {
 
   @override
   Future<void> delete(String id) {
-    // TODO: implement delete
     return collection.doc(id).delete();
   }
 
@@ -42,7 +41,6 @@ class RoomRepository extends BaseRepository<RoomPlayGroundModel> {
 
   @override
   Future<List<RoomPlayGroundModel>> getAll() {
-    // TODO: implement getAll
     return collection.get().then((value) {
       return value.docs
           .map((e) => fromJson(e.data() as Map<String, dynamic>))
@@ -55,7 +53,6 @@ class RoomRepository extends BaseRepository<RoomPlayGroundModel> {
       {required Map<String, dynamic> filters,
       DocumentSnapshot<Object?>? startAfter,
       int limit = 10}) {
-    // TODO: implement getFiltered
     final query = collection;
     filters.forEach((field, value) {
       query.where(field, isEqualTo: value);
@@ -73,9 +70,10 @@ class RoomRepository extends BaseRepository<RoomPlayGroundModel> {
     });
   }
 
-  Future<UserModel> getUser(String userId) async {
-    final user = await firestore.collection('users').doc(userId).get();
-    return UserModel.fromJson(user.data() as Map<String, dynamic>);
+  Stream<UserModel> getUser(String userId) {
+    return firestore.collection('users').doc(userId).snapshots().map((event) {
+      return UserModel.fromJson(event.data() as Map<String, dynamic>);
+    });
   }
 
   Future<bool> joinRoom(String roomId, String userId) async {
@@ -87,9 +85,20 @@ class RoomRepository extends BaseRepository<RoomPlayGroundModel> {
     return true;
   }
 
+  Future<void> playerJoin(
+      {required String roomId, required PlayerModel player}) async {
+    final playerCollection = collection.doc(roomId).collection('players');
+    await playerCollection.doc(player.userId).set(player.toMap());
+  }
+
+  Future<void> playerLeave(
+      {required PlayerModel player, required String roomId}) async {
+    final playerCollection = collection.doc(roomId).collection('players');
+    await playerCollection.doc(player.userId).delete();
+  }
+
   @override
   Stream<List<RoomPlayGroundModel>> streamAll() {
-    // TODO: implement streamAll
     return collection.snapshots().map((event) {
       return event.docs
           .map((e) => fromJson(e.data() as Map<String, dynamic>))
@@ -99,9 +108,18 @@ class RoomRepository extends BaseRepository<RoomPlayGroundModel> {
 
   @override
   Stream<RoomPlayGroundModel> streamOne(String id) {
-    // TODO: implement streamOne
     return collection.doc(id).snapshots().map((event) {
       return fromJson(event.data() as Map<String, dynamic>);
+    });
+  }
+
+  Stream<List<PlayerModel>> streamPlayers(String roomId) {
+    return collection
+        .doc(roomId)
+        .collection('players')
+        .snapshots()
+        .map((event) {
+      return event.docs.map((e) => PlayerModel.fromDocument(e)).toList();
     });
   }
 
@@ -112,7 +130,12 @@ class RoomRepository extends BaseRepository<RoomPlayGroundModel> {
 
   @override
   Future<void> update(RoomPlayGroundModel item) {
-    // TODO: implement update
     throw UnimplementedError();
+  }
+
+  Future<void> updatePlayerPosition(
+      {required PlayerModel player, required String roomId}) async {
+    final playerCollection = collection.doc(roomId).collection('players');
+    await playerCollection.doc(player.uid).update(player.toMap());
   }
 }

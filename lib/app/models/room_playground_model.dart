@@ -76,11 +76,17 @@ class RoomPlayGroundModel {
     };
   }
 
+  @override
+  String toString() {
+    return 'RoomPlayGroundModel(id: $id, name: $name, description: $description, authorId: $authorId, userIds: $userIds, messages: $messages)';
+  }
+
   static RoomPlayGroundModel fromMap(Map<String, dynamic> map) {
     return RoomPlayGroundModel(
       id: map['id'],
       name: map['name'],
       description: map['description'],
+      authorId: map['authorId'],
       userIds: RxList<String>.from(map['userIds']),
       messages: RxList<MessageModel>.from(
         (map['messages'] as List)

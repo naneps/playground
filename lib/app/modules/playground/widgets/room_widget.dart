@@ -4,8 +4,10 @@ import 'package:material_design_icons_flutter/material_design_icons_flutter.dart
 import 'package:playground/app/common/ui/avatar_widget.dart';
 import 'package:playground/app/common/ui/buttons/x_button.dart';
 import 'package:playground/app/models/room_playground_model.dart';
+import 'package:playground/app/models/user.model.dart';
 import 'package:playground/app/modules/playground/controllers/rooms_controller.dart';
 import 'package:playground/app/modules/playground/views/room_detail_view.dart';
+import 'package:playground/app/repositories/room_repository.dart';
 
 class RoomWidget extends GetView<RoomWidgetController> {
   final RoomPlayGroundModel room;
@@ -81,30 +83,44 @@ class RoomWidget extends GetView<RoomWidgetController> {
                   //    list of users
                   Expanded(
                     child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         Expanded(
                           child: ListView.builder(
                             shrinkWrap: true,
-                            itemCount: 5,
+                            itemCount: controller.room.userIds!.length,
                             itemBuilder: (context, index) {
-                              return ListTile(
-                                leading: const AvatarWidget(
-                                  imageUrl: '',
-                                  radius: 15,
-                                ),
-                                title: Text(
-                                  'User ${index + 1}',
-                                  style: Theme.of(context).textTheme.labelSmall,
-                                ),
-                                horizontalTitleGap: 10,
-                                subtitle: Text(
-                                  "Owner",
-                                  style: Theme.of(context).textTheme.bodySmall,
-                                ),
-                                visualDensity: VisualDensity.compact,
-                                dense: true,
-                                contentPadding: EdgeInsets.zero,
-                              );
+                              final userId = controller.room.userIds![index];
+                              return StreamBuilder<UserModel>(
+                                  stream: controller.getUser(userId),
+                                  builder: (context, snapshot) {
+                                    final user = snapshot.data;
+                                    return ListTile(
+                                      leading: AvatarWidget(
+                                        imageUrl: user?.avatar ?? '',
+                                        radius: 15,
+                                      ),
+                                      title: Text(
+                                        user?.name ?? 'User',
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .labelSmall,
+                                      ),
+                                      horizontalTitleGap: 10,
+                                      subtitle: Text(
+                                        controller.room.authorId == userId
+                                            ? 'Author'
+                                            : 'Member',
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .bodySmall,
+                                      ),
+                                      visualDensity: VisualDensity.compact,
+                                      dense: true,
+                                      contentPadding: EdgeInsets.zero,
+                                    );
+                                  });
                             },
                           ),
                         ),
@@ -161,6 +177,7 @@ class RoomWidget extends GetView<RoomWidgetController> {
 
 class RoomWidgetController extends GetxController {
   final roomController = Get.find<RoomsController>();
+  final RoomRepository _roomRepository = Get.find<RoomRepository>();
   final RoomPlayGroundModel room;
   RxBool isJoined = false.obs;
 
@@ -171,6 +188,10 @@ class RoomWidgetController extends GetxController {
             isJoined.value = event;
           },
         ));
+  }
+
+  Stream<UserModel> getUser(String userId) {
+    return _roomRepository.getUser(userId);
   }
 
   void joinRoom() {

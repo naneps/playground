@@ -18,7 +18,6 @@ class PlayerModel {
 
   factory PlayerModel.fromDocument(DocumentSnapshot doc) {
     return PlayerModel(
-      uid: doc['uid'],
       position: Offset(double.parse(doc['position']['dx'].toString()),
           double.parse(doc['position']['dy'].toString())),
       userId: doc['userId'],
@@ -27,9 +26,24 @@ class PlayerModel {
     );
   }
 
+  PlayerModel copyWith({
+    String? uid,
+    Offset? position,
+    String? userId,
+    bool? typing,
+    String? message,
+  }) {
+    return PlayerModel(
+      uid: uid ?? this.uid,
+      position: position ?? this.position,
+      userId: userId ?? this.userId,
+      typing: typing ?? this.typing,
+      message: message ?? this.message,
+    );
+  }
+
   Map<String, dynamic> toMap() {
     return {
-      'uid': uid,
       'position': {
         'dx': position!.dx.toDouble(),
         'dy': position!.dy.toDouble()
