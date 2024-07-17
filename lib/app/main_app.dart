@@ -13,9 +13,10 @@ class MainApp extends StatelessWidget {
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Playground',
-      theme: ThemeApp(context: context).themeData,
+      theme: ThemeApp(context: context).themeData(),
       initialRoute: AppPages.INITIAL,
       getPages: AppPages.routes,
+      darkTheme: ThemeApp(context: context).darkThemeData(),
       defaultTransition: Transition.fadeIn,
       scrollBehavior: const MaterialScrollBehavior().copyWith(
         scrollbars: false,

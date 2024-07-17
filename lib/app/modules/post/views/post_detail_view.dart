@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:markdown_widget/markdown_widget.dart';
-import 'package:playground/app/common/ui/code_preview.dart';
+import 'package:playground/app/common/ui/responsive_layout.dart';
 import 'package:playground/app/modules/post/controllers/post_detail_controller.dart';
+import 'package:playground/app/modules/post/views/post_detail_mobile_view.dart';
+import 'package:playground/app/modules/post/views/post_detail_tablet_view%20.dart';
 
 class PostDetailView extends GetView<PostDetailController> {
   const PostDetailView({super.key});
@@ -23,48 +24,9 @@ class PostDetailView extends GetView<PostDetailController> {
             title: Text(controller.post.value.title!),
             centerTitle: true,
           ),
-          body: Column(
-            children: [
-              Expanded(
-                child: Container(
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(10),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.grey.shade200,
-                          blurRadius: 10,
-                          spreadRadius: 5,
-                        ),
-                      ],
-                    ),
-                    padding: const EdgeInsets.all(20),
-                    child: MarkdownWidget(
-                      data: controller.post.value.content!,
-                      shrinkWrap: true,
-                      config: MarkdownConfig(configs: [
-                        ImgConfig(
-                          builder: (url, attributes) {
-                            return Image.network(url);
-                          },
-                        ),
-                        CodeConfig(
-                            style: TextStyle(
-                          backgroundColor: Colors.grey.shade100,
-                          fontFamily: 'monospace',
-                          fontSize: 12,
-                        )),
-                        PreConfig(
-                          wrapper: (child, code, language) => CodeWrapperWidget(
-                            child,
-                            code,
-                            language,
-                          ),
-                        )
-                      ]),
-                    )),
-              )
-            ],
+          body: const ResponsiveLayout(
+            mobile: PostDetailMobileView(),
+            tablet: PostDetailTabletView(),
           ),
         );
       }),

@@ -6,13 +6,18 @@ import 'package:playground/app/common/theme.dart';
 import 'package:playground/app/modules/core/controllers/core_controller.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-class CustomAppBar extends StatelessWidget {
+class CustomAppBar extends StatefulWidget {
   final void Function()? onLeadingTap;
   const CustomAppBar({
     super.key,
     this.onLeadingTap,
   });
 
+  @override
+  State<CustomAppBar> createState() => _CustomAppBarState();
+}
+
+class _CustomAppBarState extends State<CustomAppBar> {
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -54,8 +59,8 @@ class CustomAppBar extends StatelessWidget {
         leading: IconButton(
           icon: const Icon(Icons.menu),
           onPressed: () {
-            if (onLeadingTap != null) {
-              onLeadingTap!();
+            if (widget.onLeadingTap != null) {
+              widget.onLeadingTap!();
             }
             Get.find<CoreController>().zoomController.toggle!();
           },
@@ -67,11 +72,37 @@ class CustomAppBar extends StatelessWidget {
             foregroundColor: ThemeApp().primaryColor,
           ),
         ),
-        trailing: IconButton(
-          icon: Icon(MdiIcons.github),
-          onPressed: () async {
-            gotoGithub();
-          },
+        trailing: Padding(
+          padding: const EdgeInsets.symmetric(
+            horizontal: 10,
+          ),
+          child: SizedBox(
+            width: 200,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                // switch light/dark theme
+                Switch.adaptive(
+                  value: Get.isDarkMode,
+                  onChanged: (value) {
+                    setState(() {
+                      print('ThemeMode: ${value ? 'dark' : 'light'}');
+                      Get.changeThemeMode(
+                          value ? ThemeMode.dark : ThemeMode.light);
+                    });
+                  },
+                ),
+                IconButton(
+                  icon: Icon(MdiIcons.github),
+                  onPressed: () async {
+                    await gotoGithub();
+                  },
+                ),
+                //
+              ],
+            ),
+          ),
         ),
       ),
     );

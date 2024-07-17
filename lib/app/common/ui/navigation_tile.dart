@@ -35,15 +35,12 @@ class NavigationTile extends StatelessWidget {
       child: ListTile(
           leading: Icon(
             item.iconData,
-            color: isActive ? ThemeApp().primaryColor : ThemeApp().black,
           ),
           dense: true,
           visualDensity: VisualDensity.compact,
           title: Text(
             item.title!,
-            style: Get.textTheme.labelMedium!.copyWith(
-              color: isActive ? ThemeApp().primaryColor : ThemeApp().black,
-            ),
+            style: Get.textTheme.labelMedium!.copyWith(),
           ),
           onTap: onTap,
           trailing: badge!.isNotEmpty
