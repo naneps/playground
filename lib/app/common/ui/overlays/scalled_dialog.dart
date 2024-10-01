@@ -46,7 +46,7 @@ class _ScaleDialogState extends State<ScaleDialog>
     );
     _animation = CurvedAnimation(
       parent: _controller,
-      curve: Curves.easeInOut,
+      curve: Curves.easeInOutBack,
     );
     _controller.forward();
   }

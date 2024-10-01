@@ -33,17 +33,14 @@ class _ContentImageCarouselState extends State<ContentImageCarousel> {
   Widget build(BuildContext context) {
     return GestureDetector(
       onPanStart: (details) {
-        print("Pen stat");
         print(details);
       },
       onTapDown: (details) {
-        print("Tap Down");
         print(details.localPosition);
         print(details.globalPosition.direction);
         print(details.globalPosition);
       },
       onTapUp: (details) {
-        print("Tap Up");
         print(details.localPosition);
         print(details.globalPosition.direction);
         print(details.globalPosition);
@@ -60,6 +57,7 @@ class _ContentImageCarouselState extends State<ContentImageCarousel> {
         ),
         duration: const Duration(milliseconds: 300),
         child: Stack(
+          alignment: Alignment.topCenter,
           children: [
             PageView.builder(
               controller: _pageController,
@@ -75,11 +73,13 @@ class _ContentImageCarouselState extends State<ContentImageCarousel> {
               },
             ),
             Positioned(
+              top: 0,
               child: _buildWidgetIndicators(
-                scrollDirection: Axis.vertical,
+                scrollDirection: Axis.horizontal,
               ),
             ),
             Positioned(
+              bottom: 0,
               child: _buildWidgetIndicators(
                 scrollDirection: Axis.horizontal,
               ),
@@ -87,13 +87,7 @@ class _ContentImageCarouselState extends State<ContentImageCarousel> {
             Positioned(
               bottom: 0,
               left: 0,
-              child: _buildWidgetIndicators(
-                scrollDirection: Axis.horizontal,
-              ),
-            ),
-            Positioned(
-              right: 0,
-              bottom: 0,
+              height: 400,
               child: _buildWidgetIndicators(
                 scrollDirection: Axis.vertical,
               ),
@@ -145,13 +139,21 @@ class _ContentImageCarouselState extends State<ContentImageCarousel> {
     return Container(
       width: scrollDirection == Axis.vertical ? 50 : Get.width,
       height: scrollDirection == Axis.vertical ? Get.height : 50,
-      decoration: const BoxDecoration(
-        color: Colors.white10,
-      ),
+      decoration: BoxDecoration(
+          color: Colors.white10,
+          border: Border.all(
+            width: 2,
+            color: Colors.white,
+          ),
+          borderRadius: const BorderRadius.all(Radius.circular(10))),
+      margin: const EdgeInsets.symmetric(vertical: 20),
+      alignment: Alignment.center,
       child: ListView.separated(
         shrinkWrap: true,
         scrollDirection: scrollDirection,
-        separatorBuilder: (context, index) => const SizedBox(height: 5),
+        separatorBuilder: (context, index) => scrollDirection == Axis.vertical
+            ? const SizedBox(height: 5)
+            : const SizedBox(width: 5),
         padding: const EdgeInsets.all(5),
         itemCount: widget.images?.length ?? 0,
         itemBuilder: (context, index) {
@@ -169,9 +171,7 @@ class _ContentImageCarouselState extends State<ContentImageCarousel> {
               clipBehavior: Clip.hardEdge,
               decoration: BoxDecoration(
                 image: DecorationImage(
-                  image: CachedNetworkImageProvider(
-                    imageUrl!,
-                  ),
+                  image: CachedNetworkImageProvider(imageUrl!),
                   fit: BoxFit.cover,
                 ),
                 shape: BoxShape.circle,
