@@ -4,7 +4,7 @@ import 'package:material_design_icons_flutter/material_design_icons_flutter.dart
 enum BillingPlan {
   free,
   basic,
-  premium,
+  premium(),
   ultimate,
 }
 
